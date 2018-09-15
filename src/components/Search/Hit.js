@@ -29,6 +29,7 @@ const styles = theme => ({
 
 const Hit = props => {
   const { classes, hit } = props;
+  console.log(hit);
 
   return (
     <Link to={hit.fields.slug} className={classes.link}>

@@ -23,15 +23,14 @@ class PostTemplate extends React.Component {
 
   render() {
     const { data, pathContext } = this.props;
-    console.log(this.props);
-    const post = this.props.data.contentfulPost;
+    console.log(this.props);    
     const facebook = (((data || {}).site || {}).siteMetadata || {}).facebook;
 
     return (
       <Main>
-        <Post post={post} slug={pathContext.slug} author={data.author} facebook={facebook} />
+        <Post post={data.post} slug={pathContext.slug} author={data.author} facebook={facebook} />
         {/*<Footer footnote={data.footnote} />*/}
-        <Seo data={post} facebook={facebook} />
+        <Seo data={data.post} facebook={facebook} />
       </Main>
     );
   }
@@ -65,7 +64,7 @@ export default connect(
 //eslint-disable-next-line no-undef
 export const postQuery = graphql`
   query postQuery($slug: String!, $locale: String!) {
-    contentfulPost(slug: { eq: $slug }, node_locale: { eq: $locale }) {
+    post: contentfulPost(slug: { eq: $slug }, node_locale: { eq: $locale }) {
       title
       id
       slug

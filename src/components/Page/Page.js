@@ -6,13 +6,12 @@ import PageHeader from "./PageHeader";
 import Content from "../Main/Content";
 
 const Page = props => {
-  const { page } = props;
-  const html = (page || {}).html;
+  const { page } = props;  
 
   return (
     <Article>
-      <PageHeader {...page.frontmatter} />
-      <Content html={html} />
+      <PageHeader title={page.title} />
+      <Content html={page.body.childMarkdownRemark.html} />
     </Article>
   );
 };

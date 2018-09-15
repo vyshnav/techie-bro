@@ -6,7 +6,7 @@ import AlgoliaIcon from "!svg-react-loader!../../images/svg-icons/algolia-full.s
 
 const styles = theme => ({
   header: {
-    margin: "0 0 3em",
+    padding: "1rem 1.5rem",
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-start",
@@ -42,6 +42,7 @@ const styles = theme => ({
 
 const Header = props => {
   const { classes, title, algolia } = props;
+  console.log(props);
 
   return (
     <header className={classes.header}>

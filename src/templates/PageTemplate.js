@@ -21,12 +21,12 @@ class PageTemplate extends React.Component {
   render() {
     const { data } = this.props;
     const facebook = (((data || {}).site || {}).siteMetadata || {}).facebook;
+    console.log(data);
 
     return (
       <Main>
-        <Page page={data.page} />
-        <Footer footnote={data.footnote} />
-        <Seo data={data.post} facebook={facebook} />
+        <Page page={data.page} />        
+        <Seo data={data.page} facebook={facebook} />
       </Main>
     );
   }
@@ -59,7 +59,7 @@ export default connect(
 //eslint-disable-next-line no-undef
 export const pageQuery = graphql`
   query pageQuery($slug: String!) {
-    contentfulPage(slug: { eq: $slug }) {
+    page: contentfulPage(slug: { eq: $slug }) {
       title
       slug
       metaDescription {
@@ -71,6 +71,13 @@ export const pageQuery = graphql`
         childMarkdownRemark {
           html
           excerpt(pruneLength: 320)
+        }
+      }
+    }
+    site {
+      siteMetadata {        
+        facebook {
+          appId
         }
       }
     }

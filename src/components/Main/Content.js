@@ -7,6 +7,7 @@ import { setFontSizeIncrease } from "../../state/store";
 
 const styles = theme => ({
   content: {
+    padding: `0 1.5rem`,
     color: theme.main.colors.content,
     fontSize: props => `calc(${theme.main.fonts.content.size}em * ${props.fontSizeIncrease})`,
     lineHeight: theme.main.fonts.content.lineHeight,

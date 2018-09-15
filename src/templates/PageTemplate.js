@@ -51,26 +51,26 @@ const mapDispatchToProps = {
   setNavigatorShape
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PageTemplate);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PageTemplate);
 
 //eslint-disable-next-line no-undef
 export const pageQuery = graphql`
-  query PageByPath($slug: String!) {
-    page: markdownRemark(fields: { slug: { eq: $slug } }) {
-      id
-      html
-      frontmatter {
-        title
+  query pageQuery($slug: String!) {
+    contentfulPage(slug: { eq: $slug }) {
+      title
+      slug
+      metaDescription {
+        internal {
+          content
+        }
       }
-    }
-    footnote: markdownRemark(id: { regex: "/footnote/" }) {
-      id
-      html
-    }
-    site {
-      siteMetadata {
-        facebook {
-          appId
+      body {
+        childMarkdownRemark {
+          html
+          excerpt(pruneLength: 320)
         }
       }
     }

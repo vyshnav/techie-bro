@@ -6,7 +6,8 @@ import IconButton from "@material-ui/core/IconButton";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
-import avatar from "../../images/jpg/avatar.jpg";
+import logoblack from "../../images/jpg/logoblack.jpg";
+import logo from "../../images/jpg/logo.jpg";
 import config from "../../../content/meta/config";
 
 const styles = theme => ({
@@ -26,12 +27,12 @@ const styles = theme => ({
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
       position: "absolute",
       top: "10px",
-      left: "50%",
+      left: "40%",
       marginLeft: "-30px",
       transition: "all .5s",
       transitionTimingFunction: "ease",
       ".navigator-in-transition-from.navigator-is-opened &": {
-        left: "50%"
+        left: "8%"
       },
       ".is-aside.open &": {
         left: "8%",
@@ -42,8 +43,8 @@ const styles = theme => ({
   avatar: {
     width: "36px",
     height: "36px",
-    borderRadius: "65% 75%",
-    border: "1px solid #ddd",
+    borderRadius: "5px",
+    border: "none",
     transition: "all .3s",
     transitionTimingFunction: "ease",
     display: "inline-block",
@@ -56,14 +57,36 @@ const styles = theme => ({
       height: "44px"
     },
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
-      width: "60px",
-      height: "60px"
+      width: "100px",
+      height: "100px"
     },
     "@media (hover: hover)": {
       "&:hover": {
-        borderRadius: "75% 65%"
+        boxShadow:
+          "0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12)",
+        transition: "all .4s ease",
+        transform: "translate3D(0,-1px,0) scale(1.02)"
       }
     }
+  },
+  logo: {
+    width: "36px",
+    height: "36px",
+    borderRadius: "5px",
+    border: "none",    
+    display: "inline-block",
+    overflow: "hidden",
+    "& img": {
+      maxWidth: "100%"
+    },
+    [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {
+      width: "44px",
+      height: "44px"
+    },
+    [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
+      width: "100%",
+      height: "65px"      
+    },    
   },
   title: {
     willChange: "transform, left, top",
@@ -96,7 +119,7 @@ const styles = theme => ({
   },
   expand: {
     position: "absolute",
-    top: "30px",
+    top: "10px",
     right: "-25px",
     display: "none",
     color: theme.info.colors.text,
@@ -107,19 +130,14 @@ const styles = theme => ({
 });
 
 const InfoHeader = props => {
-  const { classes, avatarOnClick, expandOnClick } = props;
-
+  const { classes, avatarOnClick, expandOnClick, navigatorPosition, navigatorShape } = props;
   return (
     <header className={classes.header}>
       <Link className={classes.avatarLink} onClick={avatarOnClick} to="/" title="back to Home page">
-        <div className={classes.avatar}>
-          <img src={avatar} alt="" />
-        </div>
+        
+          {navigatorPosition === "is-featured" && navigatorShape === "open" || navigatorPosition === "is-aside" && navigatorShape === "closed"? <div className={classes.avatar} ><img src={logoblack} alt="" /></div> : <div className={classes.logo}><img src={logo} alt="" /></div>}
+        
       </Link>
-      <h1 className={classes.title}>
-        {config.infoTitle.replace(/ /g, "\u00a0")}
-        <small>{config.infoTitleNote}</small>
-      </h1>
       <IconButton
         aria-label="Expand the box"
         className={classes.expand}
@@ -135,7 +153,9 @@ const InfoHeader = props => {
 InfoHeader.propTypes = {
   classes: PropTypes.object.isRequired,
   avatarOnClick: PropTypes.func.isRequired,
-  expandOnClick: PropTypes.func.isRequired
+  expandOnClick: PropTypes.func.isRequired,
+  navigatorPosition: PropTypes.string.isRequired,
+  navigatorShape: PropTypes.string.isRequired
 };
 
 export default injectSheet(styles)(InfoHeader);

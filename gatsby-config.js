@@ -1,6 +1,23 @@
 require("dotenv").config();
 const config = require("./content/meta/config");
 
+let contentfulConfig;
+try {
+  contentfulConfig = require("./.contentful");
+} catch (e) {
+  contentfulConfig = {
+    production: {
+      spaceId: process.env.SPACE_ID,
+      accessToken: process.env.ACCESS_TOKEN
+    }
+  };
+} finally {
+  const { spaceId, accessToken } = contentfulConfig.production;
+  if (!spaceId || !accessToken) {
+    throw new Error("Contentful space ID and access token need to be provided.");
+  }
+}
+
 const query = `{
   allMarkdownRemark(filter: { id: { regex: "//posts|pages//" } }) {
     edges {
@@ -58,47 +75,27 @@ module.exports = {
       }
     },
     {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        path: `${__dirname}/content/posts/`,
-        name: "posts"
-      }
-    },
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        path: `${__dirname}/content/pages/`,
-        name: "pages"
-      }
-    },
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `parts`,
-        path: `${__dirname}/content/parts/`
-      }
+      resolve: `gatsby-source-contentful`,
+      options:
+        process.env.NODE_ENV === "development"
+          ? contentfulConfig.development
+          : contentfulConfig.production
     },
     {
       resolve: `gatsby-transformer-remark`,
       options: {
         plugins: [
-          `gatsby-plugin-sharp`,
           {
-            resolve: `gatsby-remark-images`,
-            options: {
-              maxWidth: 800,
-              backgroundColor: "transparent"
-            }
+            resolve: `gatsby-remark-prismjs`
           },
           {
-            resolve: `gatsby-remark-responsive-iframe`,
+            resolve: `gatsby-remark-images-contentful`,
             options: {
-              wrapperStyle: `margin-bottom: 2em`
+              maxWidth: 650,
+              backgroundColor: "white",
+              linkImagesToOriginal: false
             }
-          },
-          `gatsby-remark-prismjs`,
-          `gatsby-remark-copy-linked-files`,
-          `gatsby-remark-smartypants`
+          }
         ]
       }
     },
@@ -164,57 +161,70 @@ module.exports = {
     {
       resolve: `gatsby-plugin-feed`,
       options: {
+        setup(ref) {
+          const ret = ref.query.site.siteMetadata.rssMetadata;
+          ret.allMarkdownRemark = ref.query.allMarkdownRemark;
+          ret.generator = "GatsbyJS GCN Starter";
+          return ret;
+        },
         query: `
-          {
-            site {
-              siteMetadata {
-                title
-                description
-                siteUrl
-                site_url: siteUrl
-              }
-            }
-          }
-        `,
-        feeds: [
-          {
-            serialize: ({ query: { site, allMarkdownRemark } }) => {
-              return allMarkdownRemark.edges.map(edge => {
-                return Object.assign({}, edge.node.frontmatter, {
-                  description: edge.node.excerpt,
-                  url: site.siteMetadata.siteUrl + edge.node.fields.slug,
-                  guid: site.siteMetadata.siteUrl + edge.node.fields.slug,
-                  custom_elements: [{ "content:encoded": edge.node.html }]
-                });
-              });
-            },
-            query: `
-              {
-                allMarkdownRemark(
-                  limit: 1000,
-                  sort: { order: DESC, fields: [fields___prefix] },
-                  filter: { id: { regex: "//posts//" } }
-                ) {
-                  edges {
-                    node {
-                      excerpt
-                      html
-                      fields {
-                        slug
-                        prefix
-                      }
-                      frontmatter {
-                        title
+                    {
+                      site {
+                        siteMetadata {
+                          rssMetadata {
+                            site_url
+                            feed_url
+                            title
+                            description
+                            image_url
+                            author
+                            copyright
+                          }
+                        }
                       }
                     }
+                  `,
+        feeds: [
+          {
+            serialize(ctx) {
+              const rssMetadata = ctx.query.site.siteMetadata.rssMetadata
+              return ctx.query.allContentfulPost.edges.map(edge => ({
+                date: edge.node.publishDate,
+                title: edge.node.title,
+                description: edge.node.body.childMarkdownRemark.excerpt,
+
+                url: rssMetadata.site_url + "/" + edge.node.slug,
+                guid: rssMetadata.site_url + "/" + edge.node.slug,
+                custom_elements: [
+                  {
+                    "content:encoded": edge.node.body.childMarkdownRemark.html
                   }
-                }
-              }
-            `,
+                ]
+              }));
+            },
+            query: `
+                            {
+                          allContentfulPost(limit: 1000, sort: {fields: [publishDate], order: DESC}) {
+                             edges {
+                               node {
+                                 title
+                                 slug
+                                 publishDate(formatString: "MMMM DD, YYYY")
+                                 body {
+                                   childMarkdownRemark {
+                                     html
+                                     excerpt(pruneLength: 80)
+                                   }
+                                 }
+                               }
+                             }
+                           }
+                         }
+                    `,
             output: "/rss.xml"
           }
         ]
-      }
+      },
     },
     {
       resolve: `gatsby-plugin-sitemap`

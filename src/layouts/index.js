@@ -55,19 +55,19 @@ class Layout extends React.Component {
       }
     }
 
-    this.getCategories();
+    // this.getCategories();
   }
 
-  getCategories = () => {
-    this.categories = this.props.data.posts.edges.reduce((list, edge, i) => {
-      const category = edge.node.frontmatter.category;
-      if (category && !~list.indexOf(category)) {
-        return list.concat(edge.node.frontmatter.category);
-      } else {
-        return list;
-      }
-    }, []);
-  };
+  // getCategories = () => {
+  //   this.categories = this.props.data.posts.edges.reduce((list, edge, i) => {
+  //     const category = edge.node.frontmatter.category;
+  //     if (category && !~list.indexOf(category)) {
+  //       return list.concat(edge.node.frontmatter.category);
+  //     } else {
+  //       return list;
+  //     }
+  //   }, []);
+  // };
 
   resizeThrottler = () => {
     return timeoutThrottlerHandler(this.timeouts, "resize", 500, this.resizeHandler);
@@ -78,6 +78,7 @@ class Layout extends React.Component {
   };
 
   render() {
+    console.log(this.props);
     const { children, data } = this.props;
 
     // TODO: dynamic management of tabindexes for keybord navigation
@@ -85,9 +86,9 @@ class Layout extends React.Component {
       <LayoutWrapper>
         {children()}
         <Navigator posts={data.posts.edges} />
-        <ActionsBar categories={this.categories} />
-        <InfoBar pages={data.pages.edges} parts={data.parts.edges} />
-        {this.props.isWideScreen && <InfoBox pages={data.pages.edges} parts={data.parts.edges} />}
+        <ActionsBar />
+        <InfoBar />
+        {this.props.isWideScreen && <InfoBox  />}
       </LayoutWrapper>
     );
   }
@@ -122,58 +123,33 @@ export default connect(
 
 //eslint-disable-next-line no-undef
 export const guery = graphql`
-  query LayoutQuery {
-    posts: allMarkdownRemark(
-      filter: { id: { regex: "//posts//" } }
-      sort: { fields: [fields___prefix], order: DESC }
+  query Layout {
+    posts: allContentfulPost(
+      limit: 1000
+      sort: { fields: [publishDate], order: DESC }
+      filter: { node_locale: { eq: "en-US" } }
     ) {
       edges {
         node {
-          excerpt
-          fields {
-            slug
-            prefix
+          title
+          metaDescription {
+            metaDescription
           }
-          frontmatter {
+          id
+          node_locale
+          slug
+          publishDate(formatString: "MMMM DD, YYYY")
+          heroImage {
             title
-            subTitle
-            category
-            cover {
-              children {
-                ... on ImageSharp {
-                  resolutions(width: 90, height: 90) {
-                    ...GatsbyImageSharpResolutions_withWebp_noBase64
-                  }
-                }
-              }
+            sizes(maxWidth: 1800) {
+              ...GatsbyContentfulSizes_withWebp
             }
           }
-        }
-      }
-    }
-    pages: allMarkdownRemark(
-      filter: { id: { regex: "//pages//" }, fields: { prefix: { regex: "/^\\d+$/" } } }
-      sort: { fields: [fields___prefix], order: ASC }
-    ) {
-      edges {
-        node {
-          fields {
-            slug
-            prefix
-          }
-          frontmatter {
-            title
-            menuTitle
-          }
-        }
-      }
-    }
-    parts: allMarkdownRemark(filter: { id: { regex: "//parts//" } }) {
-      edges {
-        node {
-          html
-          frontmatter {
-            title
+          body {
+            childMarkdownRemark {
+              html
+              excerpt(pruneLength: 200)
+            }
           }
         }
       }

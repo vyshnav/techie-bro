@@ -5,22 +5,19 @@ import Article from "../Main/Article";
 import PostHeader from "./PostHeader";
 import Content from "../Main/Content";
 import PostFooter from "./PostFooter";
+import Hero from "./Hero";
 
 const Post = props => {
   const { post, author, slug, facebook } = props;
-  const frontmatter = (post || {}).frontmatter;
-  const title = ((post || {}).frontmatter || {}).title;
-  const subTitle = ((post || {}).frontmatter || {}).subTitle;
-  const date = ((post || {}).fields || {}).prefix;
-  const html = (post || {}).html;
-  const htmlAst = (post || {}).htmlAst;
 
   //console.log(htmlAst);
+  console.log(post);
 
   return (
     <Article>
-      <PostHeader title={title} subTitle={subTitle} date={date} />
-      <Content html={html} />
+      <Hero title={post.title} date={post.publishDate} image={post.heroImage} height={"50vh"} />
+      <PostHeader subTitle={post.metaDescription}/>
+      <Content html={post.body.childMarkdownRemark.html} />
       <PostFooter author={author} post={post} slug={slug} facebook={facebook} />
     </Article>
   );

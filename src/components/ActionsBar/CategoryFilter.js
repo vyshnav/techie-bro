@@ -85,11 +85,11 @@ class CategoryFilter extends React.Component {
                     <MenuItem key="all" onClick={this.handleFiltering}>
                       all posts
                     </MenuItem>
-                    {categories.map(category => (
+                    {/*{categories.map(category => (
                       <MenuItem key={category} onClick={this.handleFiltering}>
                         {category}
                       </MenuItem>
-                    ))}
+                    ))} */}
                   </MenuList>
                 </Paper>
               </Grow>

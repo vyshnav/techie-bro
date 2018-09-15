@@ -7,7 +7,7 @@ const theme = createMuiTheme({
     colors: {
       background: colors.background,
       text: colors.dark,
-      link: colors.accent,
+      link: colors.red,
       linkHover: Color(colors.accent)
         .lighten(0.1)
         .string(),
@@ -15,7 +15,7 @@ const theme = createMuiTheme({
       lines: colors.superLightGray
     },
     sizes: {
-      linesMargin: "20px"
+      linesMargin: "0"
     },
     fonts: {
       unstyledFamily: `Arial`,
@@ -25,6 +25,7 @@ const theme = createMuiTheme({
   },
   info: {
     colors: {
+      white: colors.white,
       text: colors.gray,
       background: colors.background,
       socialIcons: colors.lightGray,
@@ -44,6 +45,7 @@ const theme = createMuiTheme({
   },
   navigator: {
     colors: {
+      asidePostsListItemLinkHover: colors.white,
       background: colors.background,
       postsListItemLink: colors.gray,
       postsListItemLinkHover: colors.accent,
@@ -130,6 +132,7 @@ const theme = createMuiTheme({
   },
   bars: {
     colors: {
+      white: colors.white,
       background: colors.background,
       icon: colors.gray,
       text: colors.gray
@@ -142,6 +145,15 @@ const theme = createMuiTheme({
   mediaQueryTresholds: {
     M: 600,
     L: 1024
+  },
+  responsive: {
+    small: "35em",
+    medium: "50em",
+    large: "70em"
+  },
+  sizes: {
+    maxWidth: '1200px',        
+    maxWidthCentered: '650px',
   },
   palette: {
     primary: {

@@ -9,13 +9,13 @@ import { setNavigatorPosition } from "../../state/store";
 import { featureNavigator, moveNavigatorAside } from "./../../utils/shared";
 
 import config from "../../../content/meta/config";
-import avatar from "../../images/jpg/avatar.jpg";
+import logo from "../../images/jpg/logo.jpg";
 import TopMenu from "./TopMenu";
 
 const styles = theme => ({
   infoBar: {
     position: "absolute",
-    background: theme.bars.colors.background,
+    background: theme.bars.colors.white,
     top: 0,
     left: 0,
     width: "100%",
@@ -49,10 +49,10 @@ const styles = theme => ({
     margin: "13px 0 0 30px"
   },
   avatar: {
-    width: "36px",
-    borderRadius: "65% 75%",
-    border: "1px solid #ddd",
-    height: "36px"
+    width: "100px",
+    borderRadius: "0",
+    border: "none",
+    height: "36px" 
   }
 });
 
@@ -61,19 +61,14 @@ class InfoBar extends React.Component {
   pageLinkOnClick = moveNavigatorAside.bind(this);
 
   render() {
-    const { classes, pages } = this.props;
+    const { classes } = this.props;
 
     return (
       <aside className={classes.infoBar}>
         <Link to="/" className={classes.avatarLink} onClick={this.homeLinkOnClick}>
-          <Avatar alt={config.infoTitle} src={avatar} className={classes.avatar} />
-        </Link>
-        <h3 className={classes.title}>
-          {config.infoTitle}
-          <small>{config.infoTitleNote}</small>
-        </h3>
-        <TopMenu
-          pages={pages}
+          <Avatar alt={config.infoTitle} src={logo} className={classes.avatar} />
+        </Link>       
+        <TopMenu          
           homeLinkOnClick={this.homeLinkOnClick}
           pageLinkOnClick={this.pageLinkOnClick}
         />

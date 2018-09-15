@@ -17,7 +17,7 @@ const styles = theme => ({
     top: 0,
     left: 0,
     height: "100vh",
-    transitionTimingFunction: "ease",
+    transitionTimingFunction: "cubic-bezier(0, 1, 0, 1)",
     transition: "left .9s",
     width: "100%",
     [`@media (max-width: ${theme.mediaQueryTresholds.L - 1}px)`]: {
@@ -36,7 +36,7 @@ const styles = theme => ({
         top: 0
       },
       "&.is-aside": {
-        transition: "none, bottom 0.5s",
+        transition: "none, bottom 0.4s",
         left: 0,
         width: `${theme.info.sizes.width - 1}px`,
         zIndex: 1,
@@ -60,7 +60,8 @@ const styles = theme => ({
         }
       },
       "&.moving-aside": {
-        transition: "left 0.9s",
+        transition: "left 0.3s",
+        transitionTimingFunction: "cubic-bezier(0, 1, 0, 1)",
         left: `calc(-100vw + ${2 * theme.info.sizes.width + 60}px)`,
         width: `calc(100vw - ${theme.info.sizes.width}px - 60px)`,
         top: 0
@@ -113,24 +114,22 @@ class Navigator extends React.Component {
 
   render() {
     const { classes, posts, navigatorPosition, navigatorShape, categoryFilter } = this.props;
-
+    console.log(this.props);
     return (
       <nav
         className={`${classes.navigator} ${navigatorPosition ? navigatorPosition : ""} ${
           navigatorShape ? navigatorShape : ""
         } `}
       >
-        {this.props.posts.length && (
-          <List
-            posts={posts}
-            navigatorPosition={navigatorPosition}
-            navigatorShape={navigatorShape}
-            linkOnClick={this.linkOnClick}
-            expandOnClick={this.expandOnClick}
-            categoryFilter={categoryFilter}
-            removeFilter={this.removefilterOnClick}
-          />
-        )}
+        <List
+          posts={posts}
+          navigatorPosition={navigatorPosition}
+          navigatorShape={navigatorShape}
+          linkOnClick={this.linkOnClick}
+          expandOnClick={this.expandOnClick}
+          categoryFilter={categoryFilter}
+          removeFilter={this.removefilterOnClick}
+        />
       </nav>
     );
   }
@@ -163,4 +162,7 @@ const mapDispatchToProps = {
   setCategoryFilter
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectSheet(styles)(Navigator));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(injectSheet(styles)(Navigator));

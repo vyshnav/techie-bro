@@ -12,6 +12,7 @@ const styles = theme => ({
     color: theme.main.colors.footer,
     fontSize: `${theme.main.fonts.footer.size}em`,
     lineHeight: theme.main.fonts.footer.lineHeight,
+    padding: `0 1.5rem`,
     "& p": {
       margin: 0
     }
@@ -27,10 +28,11 @@ const PostShare = asyncComponent(() =>
 );
 
 const PostFooter = ({ classes, author, post, slug, facebook }) => {
+  console.log(post);
   return (
     <footer className={classes.footer}>
       <PostShare post={post} slug={slug} />
-      <PostAuthor author={author} />
+      {/* <PostAuthor author={author} />*/}
       <PostComments post={post} slug={slug} facebook={facebook} />
     </footer>
   );

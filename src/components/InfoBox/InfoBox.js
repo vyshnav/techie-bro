@@ -19,7 +19,7 @@ const styles = theme => ({
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
       display: "block",
       color: theme.info.colors.text,
-      background: theme.info.colors.background,
+      background: theme.info.colors.white,
       position: "absolute",
       left: 0,
       top: 0,
@@ -30,8 +30,8 @@ const styles = theme => ({
         content: `""`,
         position: "absolute",
         right: 0,
-        top: "20px",
-        bottom: "20px",
+        top: "0px",
+        bottom: "0px",
         width: "1px",
         borderRight: `1px solid ${theme.base.colors.lines}`
       }
@@ -66,25 +66,26 @@ class InfoBox extends React.Component {
   };
 
   render() {
-    const { classes, parts, pages, navigatorPosition, navigatorShape } = this.props;
-    const info = parts.find(el => el.node.frontmatter.title === "info");
+    const { classes, navigatorPosition, navigatorShape } = this.props;
+    // const info = parts.find(el => el.node.frontmatter.title === "info");
+    console.log(this.props);
 
     return (
       <aside
         className={`${classes.infoBox} ${navigatorPosition ? navigatorPosition : ""} 
         ${navigatorShape ? navigatorShape : ""}`}
       >
-        {info && (
-          <InfoHeader
-            info={info}
-            avatarOnClick={this.avatarOnClick}
-            expandOnClick={this.expandOnClick}
-          />
-        )}
+        <InfoHeader
+          navigatorShape={navigatorShape}
+          navigatorPosition={navigatorPosition}
+          avatarOnClick={this.avatarOnClick}
+          expandOnClick={this.expandOnClick}
+        />
+
         <div className={classes.wrapper}>
-          {info && <InfoText info={info} />}
+          <InfoText/>
           <SocialIcons />
-          {pages && <InfoMenu pages={pages} linkOnClick={this.menulinkOnClick} />}
+          <InfoMenu linkOnClick={this.menulinkOnClick} />
           <StackIcons />
         </div>
       </aside>
@@ -94,7 +95,6 @@ class InfoBox extends React.Component {
 
 InfoBox.propTypes = {
   classes: PropTypes.object.isRequired,
-  parts: PropTypes.array.isRequired,
   pages: PropTypes.array.isRequired,
   navigatorPosition: PropTypes.string.isRequired,
   navigatorShape: PropTypes.string.isRequired,
@@ -115,4 +115,7 @@ const mapDispatchToProps = {
   setNavigatorShape
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectSheet(styles)(InfoBox));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(injectSheet(styles)(InfoBox));

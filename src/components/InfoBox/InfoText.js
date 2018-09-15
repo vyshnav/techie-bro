@@ -20,15 +20,14 @@ const styles = theme => ({
 });
 
 const InfoText = props => {
-  const { classes, info } = props;
-  const text = info.node.html;
+  const { classes } = props;
+ 
 
-  return <div className={classes.text} dangerouslySetInnerHTML={{ __html: text }} />;
+  return <div className={classes.text} />;
 };
 
 InfoText.propTypes = {
-  classes: PropTypes.object.isRequired,
-  info: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired
 };
 
 export default injectSheet(styles)(InfoText);

@@ -15,6 +15,7 @@ class PostTemplate extends React.Component {
   moveNavigatorAside = moveNavigatorAside.bind(this);
 
   componentDidMount() {
+    console.log("here");
     if (this.props.navigatorPosition === "is-featured") {
       this.moveNavigatorAside();
     }
@@ -22,13 +23,15 @@ class PostTemplate extends React.Component {
 
   render() {
     const { data, pathContext } = this.props;
+    console.log(this.props);
+    const post = this.props.data.contentfulPost;
     const facebook = (((data || {}).site || {}).siteMetadata || {}).facebook;
 
     return (
       <Main>
-        <Post post={data.post} slug={pathContext.slug} author={data.author} facebook={facebook} />
-        <Footer footnote={data.footnote} />
-        <Seo data={data.post} facebook={facebook} />
+        <Post post={post} slug={pathContext.slug} author={data.author} facebook={facebook} />
+        {/*<Footer footnote={data.footnote} />*/}
+        <Seo data={post} facebook={facebook} />
       </Main>
     );
   }
@@ -54,38 +57,64 @@ const mapDispatchToProps = {
   setNavigatorShape
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostTemplate);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PostTemplate);
 
 //eslint-disable-next-line no-undef
 export const postQuery = graphql`
-  query PostBySlug($slug: String!) {
-    post: markdownRemark(fields: { slug: { eq: $slug } }) {
+  query postQuery($slug: String!, $locale: String!) {
+    contentfulPost(slug: { eq: $slug }, node_locale: { eq: $locale }) {
+      title
       id
-      html
-      htmlAst
-      fields {
-        slug
-        prefix
+      slug
+      node_locale
+      metaDescription {
+        metaDescription
       }
-      frontmatter {
+      publishDate(formatString: "MMMM DD, YYYY")
+      publishDateISO: publishDate(formatString: "YYYY-MM-DD")
+      tags {
         title
-        subTitle
-        cover {
-          childImageSharp {
-            resize(width: 300) {
-              src
-            }
-          }
+        id
+        slug
+        node_locale
+      }
+      heroImage {
+        title
+        sizes(maxWidth: 1800) {
+          ...GatsbyContentfulSizes_withWebp_noBase64
+        }
+        ogimg: resize(width: 1800) {
+          src
+          width
+          height
+        }
+      }
+      body {
+        childMarkdownRemark {
+          html
+          excerpt(pruneLength: 320)
         }
       }
     }
-    author: markdownRemark(id: { regex: "/author/" }) {
-      id
-      html
-    }
-    footnote: markdownRemark(id: { regex: "/footnote/" }) {
-      id
-      html
+    allContentfulPost(
+      limit: 1000
+      sort: { fields: [publishDate], order: DESC }
+      filter: { node_locale: { eq: $locale } }
+    ) {
+      edges {
+        node {
+          id
+        }
+        previous {
+          slug
+        }
+        next {
+          slug
+        }
+      }
     }
     site {
       siteMetadata {

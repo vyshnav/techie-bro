@@ -11,24 +11,24 @@ const styles = theme => ({
   posts: {
     position: "absolute",
     left: 0,
-    top: 0,
-    bottom: 0,
-    width: "100%"
+    top: "60px",
+    bottom: "60px",
+    width: "100%",
+    [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
+      top: 0,
+      bottom: 0
+    }
   },
-  inner: {
-    padding: `calc(${theme.bars.sizes.infoBar}px + 1.3rem) 1.3rem calc(${
-      theme.bars.sizes.actionsBar
-    }px + 1.3rem) 1.3rem`,
+  inner: {    
+    padding: `1.3rem  calc(0.1rem + 17px) 1.3rem calc(0.1rem + 17px)`,
     [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {
-      padding: `calc(${theme.bars.sizes.infoBar}px + 2rem) 2rem calc(${
-        theme.bars.sizes.actionsBar
-      }px + 2rem) 2rem`
+      padding: `2rem  calc(1rem + 17px) 2rem calc(1rem + 17px)`,
     },
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
-      padding: `2rem  calc(1rem + 17px) calc(2rem + 17px) 2rem`,
+      padding: `2rem  calc(1rem + 17px) 2rem calc(1rem + 17px)`,
       left: `${theme.info.sizes.width}px`,
       ".moving-featured &, .is-aside &": {
-        padding: "1rem .5rem 1rem .5rem"
+        padding: "0"
       }
     }
   },

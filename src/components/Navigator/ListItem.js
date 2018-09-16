@@ -217,19 +217,19 @@ class ListItem extends React.Component {
       <li
         className={`${classes.listItem} `}
         style={{ display: `${this.state.hidden ? "none" : "block"}` }}
-        key={post.node.slug}
+        key={post.slug}
       >
         <Link
           activeClassName="active"
           className={classes.listLink}
-          to={`/${post.node.slug}/`}
+          to={`/${post.slug}/`}
           onClick={linkOnClick}
         >
           <div className={`${classes.listItemPointer} pointer`}>
             <Img
               outerWrapperClassName="card__image"
-              sizes={post.node.heroImage.sizes}
-              alt={post.node.heroImage.title}
+              sizes={post.heroImage.sizes}
+              alt={post.heroImage.title}
               style={{
                 background: `'#ffffff'}`,
                 height: "100%"
@@ -237,9 +237,9 @@ class ListItem extends React.Component {
             />
           </div>
           <div className={classes.listItemText}>
-            <h1>{post.node.title}</h1>
-            {post.node.metaDescription.metaDescription && (
-              <h2>{post.node.metaDescription.metaDescription}</h2>
+            <h1>{post.title}</h1>
+            {post.metaDescription.metaDescription && (
+              <h2>{post.metaDescription.metaDescription}</h2>
             )}
           </div>
         </Link>

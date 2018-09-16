@@ -99,34 +99,33 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
     });
   });
 
-  // const loadTags = new Promise((resolve, reject) => {
-  //   graphql(`
-  //     {
-  //       allContentfulTag {
-  //         edges {
-  //           node {
-  //             slug
-  //             node_locale
-  //           }
-  //         }
-  //       }
-  //     }
-  //   `).then(result => {
-  //     result.data.allContentfulTag.edges.map(({ node }) => {
-  //       createPage({
-  //         path: `/${node.node_locale}/tag/${node.slug}/`,
-  //         component: path.resolve(`./src/templates/tag.js`),
-  //         context: {
-  //           slug: node.slug,
-  //           locale: node.node_locale,
-  //         },
-  //       })
-  //     })
-  //     resolve()
-  //   })
-  // })
+  const loadTags = new Promise((resolve, reject) => {
+    graphql(`
+      {
+        allContentfulTag {
+          edges {
+            node {
+              slug
+              node_locale
+            }
+          }
+        }
+      }
+    `).then(result => {
+      result.data.allContentfulTag.edges.map(({ node }) => {
+        createPage({
+          path: `/tag/${node.slug}/`,
+          component: path.resolve(`./src/templates/TagTemplate.js`),
+          context: {
+            slug: node.slug
+          },
+        })
+      })
+      resolve()
+    })
+  })
 
-  return Promise.all([loadPosts, loadPages]);
+  return Promise.all([loadPosts, loadPages, loadTags]);
 };
 
 exports.modifyWebpackConfig = ({ config, stage }) => {

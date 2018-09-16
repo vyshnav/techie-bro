@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import injectSheet from "react-jss";
+
+import styled from 'styled-components'
 import { forceCheck } from "react-lazyload";
 
 import ListHeader from "./ListHeader";
@@ -42,6 +44,19 @@ const styles = theme => ({
   }
 });
 
+const Title = styled.h1`
+  font-size: 2em;
+  text-transform: capitalize;
+  font-weight: 600;
+  text-align: center;
+  margin: 0 0 3rem 0;
+  margin: 1rem 0;
+  line-height: 1.2;
+  span {
+    margin: 0 0 0 0.25em;
+  } 
+`
+
 class List extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.categoryFilter !== this.props.categoryFilter) {
@@ -53,6 +68,8 @@ class List extends React.Component {
     const {
       classes,
       posts,
+      tags,
+      title,
       linkOnClick,
       expandOnClick,
       categoryFilter,
@@ -60,9 +77,11 @@ class List extends React.Component {
       removeFilter
     } = this.props;
 
+    console.log(this.props);
     return (
       <div className={classes.posts}>
         <SpringScrollbars forceCheckOnScroll={true} isNavigator={true}>
+          {title && <Title small>#{title}</Title> }
           <div className={classes.inner}>
             <ListHeader
               expandOnClick={expandOnClick}
@@ -72,7 +91,16 @@ class List extends React.Component {
             />
             <ul className={classes.list}>
               {posts &&
-                posts.map((post, i) => (
+                posts.map(({ node: post}, i) => (
+                  <ListItem
+                    key={i}
+                    post={post}
+                    linkOnClick={linkOnClick}
+                    categoryFilter={categoryFilter}
+                  />
+                ))}
+                {tags &&
+                tags.map((post, i) => (
                   <ListItem
                     key={i}
                     post={post}
@@ -89,8 +117,7 @@ class List extends React.Component {
 }
 
 List.propTypes = {
-  classes: PropTypes.object.isRequired,
-  posts: PropTypes.array.isRequired,
+  classes: PropTypes.object.isRequired,  
   linkOnClick: PropTypes.func.isRequired,
   expandOnClick: PropTypes.func.isRequired,
   navigatorPosition: PropTypes.string.isRequired,

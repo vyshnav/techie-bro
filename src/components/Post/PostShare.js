@@ -55,7 +55,7 @@ class PostShare extends React.Component {
     const iconSize = 36;
     const filter = count => (count > 0 ? count : "");
 
-    console.log(excerpt);
+    console.log(url);
 
     return (
       <div className={classes.share}>
@@ -70,11 +70,7 @@ class PostShare extends React.Component {
               {count => <div className="share-count">{filter(count)}</div>}
             </GooglePlusShareCount>
           </GooglePlusShareButton>
-          <FacebookShareButton
-            url={url}
-            quote={`${title} - ${excerpt}`}
-            aria-label="Facebook share"
-          >
+          <FacebookShareButton url={url} aria-label="Facebook share">
             <FacebookIcon round size={iconSize} />
             <FacebookShareCount url={url}>
               {count => <div className="share-count">{filter(count)}</div>}

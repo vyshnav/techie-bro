@@ -5,14 +5,14 @@ import config from "../../../content/meta/config";
 
 const Seo = props => {
   const { data, facebook } = props;
-  const postTitle = ((data || {}).frontmatter || {}).title;
-  const postDescription = ((data || {}).frontmatter || {}).description;
-  const postCover = ((data || {}).frontmatter || {}).cover;
-  const postSlug = ((data || {}).fields || {}).slug;
+  const postTitle = (data || {}).title;
+  const postDescription = (((data || {}).body || {}).childMarkdownRemark || {}).excerpt;
+  const postCover = (data || {}).heroImage;
+  const postSlug = (data || {}).slug;
 
   const title = postTitle ? `${postTitle} - ${config.shortSiteTitle}` : config.siteTitle;
   const description = postDescription ? postDescription : config.siteDescription;
-  const image = postCover ? postCover.childImageSharp.resize.src : config.siteImage;
+  const image = postCover ? postCover.ogimg.src : config.siteImage;
   const url = config.siteUrl + config.pathPrefix + postSlug;
 
   return (

@@ -222,7 +222,7 @@ class ListItem extends React.Component {
         <Link
           activeClassName="active"
           className={classes.listLink}
-          to={post.node.slug}
+          to={`/${post.node.slug}/`}
           onClick={linkOnClick}
         >
           <div className={`${classes.listItemPointer} pointer`}>

@@ -6,11 +6,12 @@ module.exports = {
   siteDescription: "PersonalBlog is a GatsbyJS starter.",
   siteUrl: "https://gatsby-starter-personal-blog.greglobinski.com",
   pathPrefix: "",
-  siteImage: "preview.jpg",
+  siteImage: "/logo-512.png",
   siteLanguage: "en",
   // author
   authorName: "Techie Bro!",
   authorTwitterAccount: "greglobinski",
+  copyright: "Copyright © 2018 Techie Bro!",
   // info
   infoTitle: "Techie Bro!",
   infoTitleNote: "Tech News",

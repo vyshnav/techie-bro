@@ -3,28 +3,7 @@ const webpack = require("webpack");
 const _ = require("lodash");
 const Promise = require("bluebird");
 const path = require("path");
-const { createFilePath } = require(`gatsby-source-filesystem`);
 const { store } = require(`./node_modules/gatsby/dist/redux`);
-
-// exports.onCreateNode = ({ node, getNode, boundActionCreators }) => {
-//   const { createNodeField } = boundActionCreators;
-//   // console.log(node);
-//   if (node.internal.type === `MarkdownRemark`) {
-//     const slug = createFilePath({ node, getNode, basePath: `pages` });
-//     const separtorIndex = ~slug.indexOf("--") ? slug.indexOf("--") : 0;
-//     const shortSlugStart = separtorIndex ? separtorIndex + 2 : 0;
-//     createNodeField({
-//       node,
-//       name: `slug`,
-//       value: `${separtorIndex ? "/" : ""}${slug.substring(shortSlugStart)}`
-//     });
-//     createNodeField({
-//       node,
-//       name: `prefix`,
-//       value: separtorIndex ? slug.substring(1, separtorIndex) : ""
-//     });
-//   }
-// };
 
 exports.createPages = ({ graphql, boundActionCreators }) => {
   const { createPage } = boundActionCreators;

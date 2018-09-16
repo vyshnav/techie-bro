@@ -19,20 +19,31 @@ try {
 }
 
 const query = `{
-  allMarkdownRemark(filter: { id: { regex: "//posts|pages//" } }) {
+  allContentfulPost {
     edges {
       node {
-        objectID: id
-        fields {
-          slug
+        id      
+        slug        
+        title
+        metaDescription {
+          metaDescription
         }
         internal {
-          content
+          type
+          contentDigest
+          owner          
         }
-        frontmatter {
-          title
-          subTitle
+        heroImage {
+        title  
+        sizes (maxWidth: 1800) {          
+          srcWebp          
+        }    
+        ogimg: resize(width: 1800) {
+          src
+          width
+          height
         }
+      }
       }
     }
   }
@@ -41,7 +52,7 @@ const query = `{
 const queries = [
   {
     query,
-    transformer: ({ data }) => data.allMarkdownRemark.edges.map(({ node }) => node)
+    transformer: ({ data }) => data.allContentfulPost.edges.map(({ node }) => node)
   }
 ];
 
@@ -51,6 +62,15 @@ module.exports = {
     description: config.siteDescription,
     siteUrl: config.siteUrl,
     pathPrefix: config.pathPrefix,
+    rssMetadata: {
+      site_url: config.siteUrl,
+      feed_url: `${config.siteUrl}/rss.xml`,
+      title: config.siteTitle,
+      description: config.siteDescription,
+      image_url: `${config.siteUrl}${config.siteImage}`,
+      author: config.authorName,
+      copyright: config.copyright
+    },
     algolia: {
       appId: process.env.ALGOLIA_APP_ID ? process.env.ALGOLIA_APP_ID : "",
       searchOnlyApiKey: process.env.ALGOLIA_SEARCH_ONLY_API_KEY

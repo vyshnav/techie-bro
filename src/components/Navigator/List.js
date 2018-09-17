@@ -50,7 +50,7 @@ const Title = styled.h1`
   font-weight: 600;
   text-align: center;
   margin: 0 0 3rem 0;
-  margin: 1rem 0;
+  margin: 1rem 0 0;
   line-height: 1.2;
   span {
     margin: 0 0 0 0.25em;

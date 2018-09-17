@@ -5,6 +5,7 @@ import Article from "../Main/Article";
 import PostHeader from "./PostHeader";
 import Content from "../Main/Content";
 import PostFooter from "./PostFooter";
+import TagList from "./TagList";
 import Hero from "./Hero";
 
 const Post = props => {
@@ -16,6 +17,7 @@ const Post = props => {
   return (
     <Article>
       <Hero title={post.title} date={post.publishDate} image={post.heroImage} height={"50vh"} />
+      {post.tags && <TagList tags={post.tags} />}
       <PostHeader subTitle={post.metaDescription}/>
       <Content html={post.body.childMarkdownRemark.html} />
       <PostFooter author={author} post={post} slug={slug} facebook={facebook} />

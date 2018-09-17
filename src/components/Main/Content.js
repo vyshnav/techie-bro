@@ -40,7 +40,11 @@ const styles = theme => ({
     },
     "& p": {
       margin: "0 0 1.5em 0",
-      fontWeight: 400
+      fontWeight: 400,
+      fontSize: "0.9rem",
+      [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
+        fontSize: props => `calc(${theme.main.fonts.content.size}em * ${props.fontSizeIncrease})`,
+      }
     },
     "& ul": {
       listStyle: "circle",

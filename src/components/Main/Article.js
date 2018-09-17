@@ -9,7 +9,7 @@ const styles = theme => ({
     "& strong, & b": {
       letterSpacing: "-.02em"
     },
-    "& a": {
+    "& .content a": {
       fontWeight: "bold",
       letterSpacing: "-.02em",
       textDecoration: "underline",

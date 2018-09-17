@@ -19,7 +19,7 @@ const theme = createMuiTheme({
     },
     fonts: {
       unstyledFamily: `Arial`,
-      styledFamily: "Open Sans",
+      styledFamily: `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"`,
       styledFonts: "300,400,600"
     }
   },

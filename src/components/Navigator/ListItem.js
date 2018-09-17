@@ -74,10 +74,16 @@ const styles = theme => ({
     width: "100%",
     height: "100%",
     borderRadius: "5px",
+   
     "& img": {
       width: "100%",
       height: "100%",
       borderRadius: "5px",
+       [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
+      borderRadius: 0,
+      borderTopLeftRadius: "5px",
+      borderBottomLeftRadius: "5px",
+    },
     },
     "& .card__image": {
       height: "100%"
@@ -96,6 +102,8 @@ const styles = theme => ({
         borderRadius: 0,
         borderTopLeftRadius: "5px",
         borderBottomLeftRadius: "5px",
+        height: "100% !important",
+
        }
     },
     [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {

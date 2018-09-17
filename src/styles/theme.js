@@ -67,7 +67,7 @@ const theme = createMuiTheme({
       meta: colors.gray,
       content: colors.dark,
       footer: colors.gray,
-      contentHeading: colors.gray,
+      contentHeading: colors.darkGray,
       blockquoteFrame: colors.lightGray,
       link: colors.accent,
       linkHover: colors.dark,

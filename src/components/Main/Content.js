@@ -6,8 +6,7 @@ import { connect } from "react-redux";
 import { setFontSizeIncrease } from "../../state/store";
 
 const styles = theme => ({
-  content: {
-    padding: `0 1.5rem`,
+  content: {    
     color: theme.main.colors.content,
     fontSize: props => `calc(${theme.main.fonts.content.size}em * ${props.fontSizeIncrease})`,
     lineHeight: theme.main.fonts.content.lineHeight,
@@ -27,6 +26,14 @@ const styles = theme => ({
         margin: "2.5em -3.5rem"
       }
     },
+    "& h1":{
+      padding: `0 1.5rem`,
+      color: theme.main.colors.contentHeading,      
+      fontSize: props => `calc(1.3rem * ${props.fontSizeIncrease})`,
+      [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
+        fontSize: props => `calc(${theme.main.fonts.subTitle.size}em * ${props.fontSizeIncrease})`,
+      }
+    },
     "& h2, & h3": {
       color: theme.main.colors.contentHeading,
       fontSize: `${theme.main.fonts.contentHeading.h2Size}em`,
@@ -41,7 +48,9 @@ const styles = theme => ({
     "& p": {
       margin: "0 0 1.5em 0",
       fontWeight: 400,
-      fontSize: "0.9rem",
+      padding: `0 1.5rem`,
+      wordBreak: "break-word",
+      fontSize: props => `calc(0.9rem * ${props.fontSizeIncrease})`,
       [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
         fontSize: props => `calc(${theme.main.fonts.content.size}em * ${props.fontSizeIncrease})`,
       }
@@ -85,6 +94,11 @@ const styles = theme => ({
     },
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
       fontSize: `${theme.main.fonts.content.sizeL}em`
+    },
+    "& iframe": {
+      [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
+        height: "500px"
+      }
     }
   }
 });

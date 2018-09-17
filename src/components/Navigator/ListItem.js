@@ -76,7 +76,8 @@ const styles = theme => ({
     borderRadius: "5px",
     "& img": {
       width: "100%",
-      height: "100%"
+      height: "100%",
+      borderRadius: "5px",
     },
     "& .card__image": {
       height: "100%"

@@ -4,7 +4,6 @@ import injectSheet from "react-jss";
 
 const styles = theme => ({
   header: {
-    margin: "0 0 3em",
     padding: `0 1.5rem`
   },
   subTitle: {

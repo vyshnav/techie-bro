@@ -19,7 +19,7 @@ const Tag = styled.span`
     text-decoration: none !important;
     color: #046fc2 !important;
     font-size: .85714286rem;
-    font-weight: 300 !important;  
+    font-weight: 600 !important;  
     &:hover{      
       color: #044d86 !important;
     } 

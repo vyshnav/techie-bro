@@ -16,9 +16,9 @@ const Post = props => {
 
   return (
     <Article>
-      <Hero title={post.title} date={post.publishDate} image={post.heroImage} height={"50vh"} />
-      {post.tags && <TagList tags={post.tags} />}
+      <Hero title={post.title} date={post.publishDate} image={post.heroImage} height={"50vh"} />      
       <PostHeader subTitle={post.metaDescription}/>
+      {post.tags && <TagList tags={post.tags} />}
       <Content html={post.body.childMarkdownRemark.html} />
       <PostFooter author={author} post={post} slug={slug} facebook={facebook} />
     </Article>

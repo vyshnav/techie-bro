@@ -23,7 +23,7 @@ const Post = asyncComponent(
   <ContentLoader
     height={600}
     width={400}
-    speed={0.}
+    speed={0.8}
     primaryColor="#d3d3d3"
     secondaryColor="#e3e3e3">
     

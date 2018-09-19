@@ -1,16 +1,36 @@
 import React from "react";
+import ContentLoader, { Facebook } from "react-content-loader";
 import PropTypes from "prop-types";
 import Main from "../components/Main/";
 import { connect } from "react-redux";
 require("core-js/fn/array/find");
 require("prismjs/themes/prism-okaidia.css");
-
+import asyncComponent from "../components/common/AsyncComponent/";
 import { setNavigatorPosition, setNavigatorShape } from "../state/store";
 import { moveNavigatorAside } from "../utils/shared";
-import Post from "../components/Post/";
 import Footer from "../components/Footer/";
 import Seo from "../components/Seo";
 
+
+
+const Post = asyncComponent(
+  () =>
+    import("../components/Post/")
+      .then(module => {
+        return module;
+      })
+      .catch(error => {}),
+  <ContentLoader
+    height={475}
+    width={400}
+    speed={2}
+    primaryColor="#f3f3f3"
+    secondaryColor="#ecebeb">    
+    <rect x="75" y="13" rx="4" ry="4" width="100" height="13" /> 
+    <rect x="75" y="37" rx="4" ry="4" width="50" height="8" /> 
+    <rect x="0" y="70" rx="5" ry="5" width="400" height="400" />
+  </ContentLoader>
+);
 class PostTemplate extends React.Component {
   moveNavigatorAside = moveNavigatorAside.bind(this);
 

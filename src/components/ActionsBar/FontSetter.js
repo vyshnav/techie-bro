@@ -45,6 +45,16 @@ const styles = theme => ({
   dialogContent:  {    
     overflow: "hidden"
   },
+  slider: {
+    margin: "20px",
+    "& .rc-slider-rail": {
+      backgroundColor: theme.base.colors.accent,
+      height: "2px",
+      transform: "translate(0, -50%)",
+      opacity: "0.24"
+    }
+  }
+
 });
 
 class FontSetter extends React.Component {
@@ -92,12 +102,21 @@ class FontSetter extends React.Component {
   render() {
     const { classes } = this.props;
     const { anchorEl, open } = this.state;
-    const style = { margin: 25 };
-    const marks = {      
-      0: "Aa",
+    const style = { margin: 20 };
+    const marks = {
+      0: {
+        style: {
+          fontSize: "1rem",
+          marginTop: "7px",
+        },
+        label: "Aa"
+      },
       16.6: "",
       33.2: "",
       50: {
+        style: {
+          fontSize: "1.5rem"
+        },
         label: <strong>Aa</strong>,
       },
     };
@@ -151,16 +170,13 @@ class FontSetter extends React.Component {
             <DialogContent classes={{
                 root: classes.dialogContent, // class name, e.g. `classes-nesting-label-x`
             }}>              
-              <div style={style}>
+              <div className={classes.slider}>
               <Slider marks={marks} min={0} max={50} step={null} onChange={this.handleSetting} defaultValue={this.state.fontSize} />
               </div>
             </DialogContent>
-            <DialogActions>
+            <DialogActions>              
               <Button onClick={this.handleClose} color="primary">
-                Disagree
-              </Button>
-              <Button onClick={this.handleClose} color="primary">
-                Agree
+                Ok
               </Button>
             </DialogActions>
           </Dialog>

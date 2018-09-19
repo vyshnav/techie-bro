@@ -21,17 +21,23 @@ const Post = asyncComponent(
       })
       .catch(error => {}),
   <ContentLoader
-    height={475}
+    height={600}
     width={400}
-    speed={2}
-    primaryColor="#f3f3f3"
-    secondaryColor="#d3d3d3">    
+    speed={0.}
+    primaryColor="#d3d3d3"
+    secondaryColor="#e3e3e3">
     
     <rect x="-0.93" y="0.27" rx="0" ry="0" width="405.72" height="352.01" /> 
     
     <rect x="29.5" y="382.27" rx="0" ry="0" width="270" height="17" /> 
     <rect x="28.5" y="424.27" rx="0" ry="0" width="155" height="13" /> 
-    <rect x="28.5" y="463.27" rx="0" ry="0" width="330" height="17" />   
+    <rect x="28.5" y="463.27" rx="0" ry="0" width="330" height="17" />
+  
+
+    
+    <rect x="29" y="520" rx="3" ry="3" width="340" height="6.4" /> 
+    <rect x="29" y="546" rx="3" ry="3" width="350" height="6.4" /> 
+    <rect x="29" y="568" rx="3" ry="3" width="201" height="6.4" />
   </ContentLoader>
 );
 class PostTemplate extends React.Component {

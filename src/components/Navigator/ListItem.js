@@ -10,7 +10,6 @@ const styles = theme => ({
     margin: "0 0 .7em 0",
     transition: "height 1s",
     background: "#ffffff",
-    border: "1px solid rgba(0,0,0,.1)!important",
 
     position: "relative",
     borderRadius: "5px",
@@ -30,7 +29,8 @@ const styles = theme => ({
           }
         }
       },
-      marginBottom: "0.5rem!important"
+      marginBottom: "0.5rem!important",
+      border: "1px solid rgba(0,0,0,.1)!important",
     },
     "@media (hover: hover)": {
       "&:hover": {
@@ -59,7 +59,7 @@ const styles = theme => ({
     }
   },
   listItemPointer: {
-    borderRight: "1px solid rgba(0,0,0,.1)!important",
+    
     backgroundColor: "#e2e2e2",
     position: "relative",
     flexShrink: 0,
@@ -83,6 +83,7 @@ const styles = theme => ({
       borderRadius: 0,
       borderTopLeftRadius: "5px",
       borderBottomLeftRadius: "5px",
+      borderRight: "1px solid rgba(0,0,0,.1)!important",
     },
     },
     "& .card__image": {
@@ -204,11 +205,12 @@ class ListItem extends React.Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
+     console.log(this.props.post);
     if (prevProps.categoryFilter !== this.props.categoryFilter) {
-      const category = this.props.post.node.frontmatter.category;
+      const category = this.props.post.category.title;
       const categoryFilter = this.props.categoryFilter;
 
-      if (categoryFilter === "all posts") {
+      if (categoryFilter === "All") {
         this.setState({ hidden: false });
       } else if (category !== categoryFilter) {
         this.setState({ hidden: true });
@@ -224,7 +226,7 @@ class ListItem extends React.Component {
 
     return (
       <li
-        className={`${classes.listItem} `}
+        className={`${classes.listItem} ${post.category.title}`}
         style={{ display: `${this.state.hidden ? "none" : "block"}` }}
         key={post.slug}
       >

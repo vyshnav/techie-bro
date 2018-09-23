@@ -5,23 +5,35 @@ import injectSheet from "react-jss";
 import styled from 'styled-components'
 import { forceCheck } from "react-lazyload";
 
+import { connect } from "react-redux";
 import ListHeader from "./ListHeader";
 import SpringScrollbars from "../SpringScrollbars";
+import AppBarScrollable from "../AppBarScrollable/";
 import ListItem from "./ListItem";
+
+import { setCategoryFilter } from "../../state/store";
 
 const styles = theme => ({
   posts: {
     position: "absolute",
     left: 0,
-    top: "60px",
+    top: "100px",
     bottom: "60px",
     width: "100%",
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
-      top: 0,
-      bottom: 0
+      top: "40px",
+      bottom: "0px",
+      ".is-aside.closed &": {
+        top: 0,
+        bottom: 0
+      },
+      ".is-aside.open &": {
+        top: 40,
+        bottom: 0
+      }
     }
   },
-  inner: {    
+  inner: {
     padding: `1.3rem  calc(0.1rem + 17px) 1.3rem calc(0.1rem + 17px)`,
     [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {
       padding: `2rem  calc(1rem + 17px) 2rem calc(1rem + 17px)`,
@@ -64,17 +76,23 @@ class List extends React.Component {
     }
   }
 
+  categoryFilterOnClick = val => {
+    this.props.setCategoryFilter(val);
+  };
+
   render() {
     const {
       classes,
       posts,
       tags,
+      categories,
       title,
       linkOnClick,
       expandOnClick,
       categoryFilter,
-      navigatorShape,
-      removeFilter
+      navigatorPosition, 
+      navigatorShape, 
+      isWideScreen,
     } = this.props;
 
     console.log(this.props);
@@ -82,12 +100,15 @@ class List extends React.Component {
       <div className={classes.posts}>
         <SpringScrollbars forceCheckOnScroll={true} isNavigator={true}>
           {title && <Title small>#{title}</Title> }
+          {((navigatorShape === "open") || navigatorPosition !== "is-aside") && (
+             <AppBarScrollable categories={categories} filterCategory={this.categoryFilterOnClick} />
+          )}
+         
           <div className={classes.inner}>
             <ListHeader
               expandOnClick={expandOnClick}
               categoryFilter={categoryFilter}
               navigatorShape={navigatorShape}
-              removeFilter={removeFilter}
             />
             <ul className={classes.list}>
               {posts &&
@@ -123,7 +144,23 @@ List.propTypes = {
   navigatorPosition: PropTypes.string.isRequired,
   navigatorShape: PropTypes.string.isRequired,
   categoryFilter: PropTypes.string.isRequired,
-  removeFilter: PropTypes.func.isRequired
+  setCategoryFilter: PropTypes.func.isRequired,
 };
 
-export default injectSheet(styles)(List);
+const mapStateToProps = (state, ownProps) => {
+  return {
+    navigatorPosition: state.navigatorPosition,
+    navigatorShape: state.navigatorShape,
+    isWideScreen: state.isWideScreen,
+    categoryFilter: state.categoryFilter
+  };
+};
+
+const mapDispatchToProps = {
+  setCategoryFilter
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(injectSheet(styles)(List));

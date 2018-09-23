@@ -20,18 +20,12 @@ const styles = theme => ({
     left: 0,
     width: "100%",
     height: `${theme.bars.sizes.infoBar}px`,
-    zIndex: 1,
-    "&::before": {
-      content: `""`,
-      position: "absolute",
-      left: theme.base.sizes.linesMargin,
-      right: theme.base.sizes.linesMargin,
-      height: 0,
-      bottom: 0,
-      borderTop: `1px solid ${theme.base.colors.lines}`
-    },
+    zIndex: 9999,
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
       display: "none"
+    },
+    "&.is-aside.open": {
+      borderBottom: `1px solid ${theme.base.colors.lines}`
     }
   },
   title: {
@@ -53,7 +47,7 @@ const styles = theme => ({
     width: "120px",
     borderRadius: "0",
     border: "none",
-    height: "40px" 
+    height: "40px"
   }
 });
 
@@ -62,10 +56,11 @@ class InfoBar extends React.Component {
   pageLinkOnClick = moveNavigatorAside.bind(this);
 
   render() {
-    const { classes } = this.props;
+    const { classes, navigatorPosition, navigatorShape} = this.props;
 
     return (
-      <aside className={classes.infoBar}>
+      <aside className={`${classes.infoBar} ${navigatorPosition ? navigatorPosition : ""} 
+        ${navigatorShape ? navigatorShape : ""}`}>
         <Link to="/" className={classes.avatarLink} onClick={this.homeLinkOnClick}>
           <Avatar alt={config.infoTitle} src={logo} className={classes.avatar} />
         </Link>       
@@ -80,7 +75,9 @@ class InfoBar extends React.Component {
 
 InfoBar.propTypes = {
   classes: PropTypes.object.isRequired,
-  pages: PropTypes.array.isRequired
+  pages: PropTypes.array.isRequired,
+  navigatorPosition: PropTypes.string.isRequired,
+  navigatorShape: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -91,7 +88,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = {
-  setNavigatorPosition
+  setNavigatorPosition,
 };
 
 export default connect(

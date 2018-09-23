@@ -26,6 +26,7 @@ const styles = theme => ({
       width: `${theme.info.sizes.width}px`,
       height: "100%",
       padding: "20px 40px",
+      zIndex: 9999,
       "&::after": {
         content: `""`,
         position: "absolute",

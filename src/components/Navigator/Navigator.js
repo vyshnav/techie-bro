@@ -8,6 +8,8 @@ import { setNavigatorPosition, setNavigatorShape, setCategoryFilter } from "../.
 import { moveNavigatorAside } from "./../../utils/shared";
 import List from "./List";
 
+
+
 const styles = theme => ({
   navigator: {
     transform: "translate3d(0, 0, 0)",
@@ -17,12 +19,13 @@ const styles = theme => ({
     top: 0,
     left: 0,
     height: "100vh",
-    transitionTimingFunction: "cubic-bezier(0, 1, 0, 1)",
-    transition: "left .9s",
+    transitionTimingFunction: "cubic-bezier(0, 0.85, 0.13, 1.01)",
+    transition: "left .5s",
     width: "100%",
+    zIndex: 1,
     [`@media (max-width: ${theme.mediaQueryTresholds.L - 1}px)`]: {
       "&.is-aside": {
-        left: "-100%"
+        left: "-100%",
       },
       "&.is-featured": {
         left: 0
@@ -43,11 +46,13 @@ const styles = theme => ({
         top: "auto",
         "&.closed": {
           bottom: `calc(-100% + 100px + ${theme.navigator.sizes.closedHeight}px)`,
-          height: `calc(100% - 100px)`
+          height: `calc(100% - 100px)`,
+          zIndex: 99999,
         },
         "&.open": {
           bottom: 0,
-          height: `calc(100% - 100px)`
+          height: `calc(100% - 100px)`,
+          zIndex: 99999,
         },
         "&::after": {
           content: `""`,
@@ -108,27 +113,23 @@ class Navigator extends React.Component {
     setTimeout(forceCheck, 600);
   };
 
-  removefilterOnClick = e => {
-    this.props.setCategoryFilter("all posts");
-  };
-
   render() {
-    const { classes, posts, navigatorPosition, navigatorShape, categoryFilter } = this.props;
+    const { classes, posts, navigatorPosition, navigatorShape, categoryFilter, categories } = this.props;
     console.log(this.props);
     return (
       <nav
         className={`${classes.navigator} ${navigatorPosition ? navigatorPosition : ""} ${
           navigatorShape ? navigatorShape : ""
         } `}
-      >
+      >       
         <List
           posts={posts}
+          categories={categories}
           navigatorPosition={navigatorPosition}
           navigatorShape={navigatorShape}
           linkOnClick={this.linkOnClick}
           expandOnClick={this.expandOnClick}
-          categoryFilter={categoryFilter}
-          removeFilter={this.removefilterOnClick}
+          categoryFilter={categoryFilter}          
         />
       </nav>
     );

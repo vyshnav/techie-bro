@@ -51,6 +51,7 @@ class CategoryFilter extends React.Component {
 
   handleFiltering = e => {
     const category = e.target.innerText.trim();
+    console.log(category);
     this.props.filterCategory(category);
     this.handleClose();
   };
@@ -83,13 +84,13 @@ class CategoryFilter extends React.Component {
                 <Paper>
                   <MenuList role="menu">
                     <MenuItem key="all" onClick={this.handleFiltering}>
-                      all posts
+                      All Categories
                     </MenuItem>
-                    {/*{categories.map(category => (
-                      <MenuItem key={category} onClick={this.handleFiltering}>
-                        {category}
+                    {categories.map(category => (
+                      <MenuItem key={category.id} onClick={this.handleFiltering}>
+                        {category.title}
                       </MenuItem>
-                    ))} */}
+                    ))}
                   </MenuList>
                 </Paper>
               </Grow>

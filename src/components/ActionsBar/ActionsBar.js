@@ -37,7 +37,7 @@ const styles = theme => ({
     justifyContent: "space-between",
     height: `${theme.bars.sizes.actionsBar}px`,
     width: "100%",
-    zIndex: 1,
+    zIndex: 9999,
     "&::before": {
       content: `""`,
       position: "absolute",

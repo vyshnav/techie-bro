@@ -78,7 +78,7 @@ const styles = theme => ({
 });
 
 const ListHeader = props => {
-  const { classes, expandOnClick, categoryFilter, navigatorShape, removeFilter } = props;
+  const { classes, expandOnClick, categoryFilter, navigatorShape } = props;
 
   return (
     <header>
@@ -94,21 +94,7 @@ const ListHeader = props => {
             <ExpandLessIcon />
           </IconButton>
         </div>
-      )}
-      {navigatorShape === "open" &&
-        categoryFilter !== "all posts" && (
-          <div className={classes.filter}>
-            <small>Active category filter:</small> <strong>{categoryFilter}</strong>
-            <IconButton
-              aria-label="Remove filtering"
-              className={classes.clear}
-              onClick={removeFilter}
-              title="Clear filtering"
-            >
-              <CloseIcon />
-            </IconButton>
-          </div>
-        )}
+      )}      
     </header>
   );
 };
@@ -118,7 +104,6 @@ ListHeader.propTypes = {
   expandOnClick: PropTypes.func.isRequired,
   categoryFilter: PropTypes.string.isRequired,
   navigatorShape: PropTypes.string.isRequired,
-  removeFilter: PropTypes.func.isRequired
 };
 
 export default injectSheet(styles)(ListHeader);

@@ -55,19 +55,21 @@ class Layout extends React.Component {
       }
     }
 
-    // this.getCategories();
+    this.getCategories();
   }
 
-  // getCategories = () => {
-  //   this.categories = this.props.data.posts.edges.reduce((list, edge, i) => {
-  //     const category = edge.node.frontmatter.category;
-  //     if (category && !~list.indexOf(category)) {
-  //       return list.concat(edge.node.frontmatter.category);
-  //     } else {
-  //       return list;
-  //     }
-  //   }, []);
-  // };
+  getCategories = () => {
+    console.log(this.props);
+    this.categories = this.props.data.posts.edges.reduce((list, edge, i) => {
+      const category = edge.node.category;
+      if (category && !~list.indexOf(category)) {
+        return list.concat(edge.node.category);
+      } else {
+        return list;
+      }
+    }, []);
+    console.log(this.categories);
+  };
 
   resizeThrottler = () => {
     return timeoutThrottlerHandler(this.timeouts, "resize", 500, this.resizeHandler);
@@ -85,10 +87,10 @@ class Layout extends React.Component {
     return (
       <LayoutWrapper>
         {children()}
-        <Navigator posts={data.posts.edges} />
-        <ActionsBar />
-        <InfoBar />
-        {this.props.isWideScreen && <InfoBox  />}
+        <Navigator posts={data.posts.edges} categories={this.categories}/>       
+        <ActionsBar categories={this.categories} />
+        <InfoBar />        
+        {this.props.isWideScreen && <InfoBox />}
       </LayoutWrapper>
     );
   }
@@ -145,6 +147,11 @@ export const guery = graphql`
               ...GatsbyContentfulSizes_withWebp
             }
           }
+          category {
+            id
+            title
+            slug
+          }
           body {
             childMarkdownRemark {
               html
@@ -153,6 +160,8 @@ export const guery = graphql`
           }
         }
       }
-    }
+    }   
   }
 `;
+
+

@@ -104,7 +104,7 @@ const initialState = {
   isWideScreen: false,
   scrollToTop: false,
   fontSizeIncrease: 1.166,
-  categoryFilter: "all posts"
+  categoryFilter: "All"
 };
 
 const createStore = () =>

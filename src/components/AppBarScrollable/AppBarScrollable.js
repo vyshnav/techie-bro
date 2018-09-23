@@ -100,7 +100,7 @@ class AppBarScrollable extends React.Component {
                 label: classes.label // class name, e.g. `classes-nesting-label-x`
               }}
             />
-            {categories.map(category => (
+            { categories && categories.map(category => (
               <Tab
                 key={category.id}
                 label={category.title}

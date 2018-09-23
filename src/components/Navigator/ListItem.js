@@ -226,7 +226,7 @@ class ListItem extends React.Component {
 
     return (
       <li
-        className={`${classes.listItem} ${post.category.title}`}
+        className={`${classes.listItem} ${post.slug}`}
         style={{ display: `${this.state.hidden ? "none" : "block"}` }}
         key={post.slug}
       >

@@ -8,7 +8,7 @@ import { setNavigatorPosition, setNavigatorShape, setCategoryFilter } from "../.
 import { moveNavigatorAside } from "./../../utils/shared";
 import List from "./List";
 
-
+import AppBarScrollable from "../AppBarScrollable/";
 
 const styles = theme => ({
   navigator: {
@@ -113,6 +113,10 @@ class Navigator extends React.Component {
     setTimeout(forceCheck, 600);
   };
 
+  categoryFilterOnClick = val => {
+    this.props.setCategoryFilter(val);
+  };
+
   render() {
     const { classes, posts, navigatorPosition, navigatorShape, categoryFilter, categories } = this.props;
     console.log(this.props);
@@ -121,7 +125,10 @@ class Navigator extends React.Component {
         className={`${classes.navigator} ${navigatorPosition ? navigatorPosition : ""} ${
           navigatorShape ? navigatorShape : ""
         } `}
-      >       
+      >   
+        {((navigatorShape === "open") || navigatorPosition !== "is-aside") && (
+             <AppBarScrollable categories={categories} filterCategory={this.categoryFilterOnClick} />
+          )}    
         <List
           posts={posts}
           categories={categories}

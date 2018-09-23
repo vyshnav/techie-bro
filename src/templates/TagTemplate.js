@@ -9,11 +9,12 @@ import { setNavigatorPosition, setNavigatorShape } from "../state/store";
 import { moveNavigatorAside } from "../utils/shared";
 import Tags from "../components/Tags/";
 
-
 class PostTemplate extends React.Component {
   moveNavigatorAside = moveNavigatorAside.bind(this);
 
   linkOnClick = moveNavigatorAside.bind(this);
+
+  categories = [];
 
   expandOnClick = e => {
     this.props.setNavigatorShape("open");
@@ -27,9 +28,26 @@ class PostTemplate extends React.Component {
     }
   }
 
+  componentWillMount() {
+    this.getCategories();
+  }
+
+  getCategories = () => {
+    console.log(this.props);
+    this.categories = this.props.data.categories.edges.reduce((list, edge, i) => {
+      const category = edge.node;
+      if (category && !~list.indexOf(category)) {
+        return list.concat(edge.node);
+      } else {
+        return list;
+      }
+    }, []);
+    console.log(this.categories);
+  };
+
   render() {
     const { data, pathContext } = this.props;
-    console.log(this.props);    
+    console.log(this.props);
     const facebook = (((data || {}).site || {}).siteMetadata || {}).facebook;
 
     return (
@@ -39,8 +57,9 @@ class PostTemplate extends React.Component {
           tags={data.tags.post}
           linkOnClick={this.linkOnClick}
           expandOnClick={this.expandOnClick}
+          categories={this.categories}
         />
-        {/*<Footer footnote={data.footnote} />*/}        
+        {/*<Footer footnote={data.footnote} />*/}
       </Main>
     );
   }
@@ -101,8 +120,18 @@ export const query = graphql`
         }
       }
     }
+    categories: allContentfulCategory {
+      edges {
+        node {
+          id
+          title
+          slug
+          node_locale
+        }
+      }
+    }
     site {
-      siteMetadata {        
+      siteMetadata {
         facebook {
           appId
         }

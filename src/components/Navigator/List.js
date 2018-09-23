@@ -8,7 +8,6 @@ import { forceCheck } from "react-lazyload";
 import { connect } from "react-redux";
 import ListHeader from "./ListHeader";
 import SpringScrollbars from "../SpringScrollbars";
-import AppBarScrollable from "../AppBarScrollable/";
 import ListItem from "./ListItem";
 
 import { setCategoryFilter } from "../../state/store";
@@ -31,6 +30,9 @@ const styles = theme => ({
         top: 40,
         bottom: 0
       }
+    },
+    "&.tag": {
+      top: "60px",
     }
   },
   inner: {
@@ -76,9 +78,7 @@ class List extends React.Component {
     }
   }
 
-  categoryFilterOnClick = val => {
-    this.props.setCategoryFilter(val);
-  };
+  
 
   render() {
     const {
@@ -93,16 +93,15 @@ class List extends React.Component {
       navigatorPosition, 
       navigatorShape, 
       isWideScreen,
+      tagPage,
     } = this.props;
 
     console.log(this.props);
     return (
-      <div className={classes.posts}>
+      <div className={`${classes.posts} ${tagPage ? tagPage : ""}`}>
         <SpringScrollbars forceCheckOnScroll={true} isNavigator={true}>
           {title && <Title small>#{title}</Title> }
-          {((navigatorShape === "open") || navigatorPosition !== "is-aside") && (
-             <AppBarScrollable categories={categories} filterCategory={this.categoryFilterOnClick} />
-          )}
+          
          
           <div className={classes.inner}>
             <ListHeader

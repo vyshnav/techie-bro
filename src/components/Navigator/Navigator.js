@@ -34,6 +34,7 @@ const styles = theme => ({
     },
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
       "&.is-featured": {
+        background: theme.navigator.colors.navBg,
         transition: "left .9s",
         width: `calc(100vw - ${theme.info.sizes.width}px - ${theme.bars.sizes.actionsBar}px)`,
         left: `${theme.info.sizes.width}px`,

@@ -10,7 +10,8 @@ const styles = theme => ({
       props.overrides && props.overrides.background
         ? props.overrides.background
         : theme.base.colors.background,
-    position: "absolute",
+    position: props =>
+      (props.overrides && props.overrides.position ? props.overrides.position : "absolute"),
     left: props => (props.overrides && props.overrides.left ? props.overrides.left : 0),
     right: props => (props.overrides && props.overrides.right ? props.overrides.right : 0),
     top: "0",

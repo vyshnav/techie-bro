@@ -1,9 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import injectSheet from "react-jss";
+import styled from "styled-components";
 import FacebookProvider, { Comments } from "react-facebook";
 require("core-js/fn/array/find");
 
+import comments from "../../images/comments.gif";
 import config from "../../../content/meta/config";
 
 const styles = theme => ({
@@ -14,11 +16,31 @@ const styles = theme => ({
   }
 });
 
+const Wrapper = styled.div`
+  .fb-comments {
+    span {
+      background-image: url(${comments});
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      display: block;
+      min-height: 200px;
+    }
+  }
+  .fb-comments[fb-xfbml-state="rendered"] {
+    span {
+      background-image: none;
+      padding: 0;
+      min-height: 0;
+    }
+  }
+`
+
 const PostComments = props => {
   const { classes, slug, facebook } = props;
 
   return (
-    <div id="post-comments" className={classes.postComments}>
+    <Wrapper id="post-comments" className={classes.postComments}>
       <FacebookProvider appId={facebook}>
         <Comments
           href={`${config.siteUrl}${slug}`}
@@ -26,7 +48,7 @@ const PostComments = props => {
           colorScheme={props.theme.main.colors.fbCommentsColorscheme}
         />
       </FacebookProvider>
-    </div>
+    </Wrapper>
   );
 };
 

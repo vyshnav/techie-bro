@@ -6,6 +6,7 @@ require("core-js/fn/array/find");
 import asyncComponent from "../common/AsyncComponent/";
 import PostAuthor from "./PostAuthor";
 import PostComments from "./PostComments";
+import Loading from "../common/Loading/";
 
 const styles = theme => ({
   footer: {
@@ -19,12 +20,17 @@ const styles = theme => ({
   }
 });
 
-const PostShare = asyncComponent(() =>
-  import("./PostShare")
-    .then(module => {
-      return module;
-    })
-    .catch(error => {})
+const PostShare = asyncComponent(
+  () =>
+    import("./PostShare")
+      .then(module => {
+        return module;
+      })
+      .catch(error => {}),
+  <Loading
+    overrides={{ position:"relative", height: "100px",}}
+    afterRight={true}
+  />
 );
 
 const PostFooter = ({ classes, author, post, slug, facebook }) => {

@@ -1,5 +1,6 @@
 module.exports = {
   background: "#ffffff",
+  navBg: "#f4f4f4",
   white: "#ffffff",
   accent: "#f55144",
   bright: "#ffffff",

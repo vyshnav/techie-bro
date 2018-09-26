@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "gatsby-link";
+import { NavLink } from 'react-router-dom'
 import PropTypes from "prop-types";
 import injectSheet from "react-jss";
 import LazyLoad from "react-lazyload";
@@ -15,6 +16,8 @@ const styles = theme => ({
     borderRadius: "5px",
     [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {
       margin: "0 0 1.5rem 0",
+      marginBottom: "0.5rem!important",
+      border: "1px solid rgba(0,0,0,.1)!important",
     },
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
       ".moving-featured &, .is-aside &": {
@@ -35,19 +38,37 @@ const styles = theme => ({
     "@media (hover: hover)": {
       "&:hover": {
         boxShadow: "0 1px 1px hsla(0,3%,67%,.1)",
-        transition: "all .4s ease"      
+        transition: "all .4s ease"
       }
+    },
+    ".moving-featured &, .is-aside &": {
+      borderRadius: "0"
     }
+  },
+  activeLinkStyle:{
+    color: "white",
+    background: "linear-gradient(87deg,#f5365c 0,#f56036 100%)",
   },
   listLink: {
     display: "flex",
     alignContent: "center",    
     justifyContent: "flex-start",
     flexDirection: "row",   
-    color: theme.navigator.colors.postsListItemLink,
-    "@media (hover: hover)": {
-      "&:hover": {
-        color: theme.navigator.colors.postsListItemLinkHover
+    color: theme.navigator.colors.postsListItemLinkM,
+    [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {
+      color: theme.navigator.colors.postsListItemLink,
+      "@media (hover: hover)": {
+        "&:hover": {
+          color: theme.navigator.colors.postsListItemLinkHover
+        }
+      }
+    },
+    [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
+      color: theme.navigator.colors.postsListItemLink,
+      "@media (hover: hover)": {
+        "&:hover": {
+          color: theme.navigator.colors.postsListItemLinkHover
+        }
       }
     },
     ".moving-featured &, .is-aside &": {
@@ -56,6 +77,10 @@ const styles = theme => ({
           color: theme.navigator.colors.asidePostsListItemLinkHover
         }
       }
+    },
+    "&.active": {
+      color: "white",
+      background: "linear-gradient(87deg,#f5365c 0,#f56036 100%)",
     }
   },
   listItemPointer: {
@@ -79,12 +104,24 @@ const styles = theme => ({
       width: "100%",
       height: "100%",
       borderRadius: "5px",
-       [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
-      borderRadius: 0,
-      borderTopLeftRadius: "5px",
-      borderBottomLeftRadius: "5px",
-      borderRight: "1px solid rgba(0,0,0,.1)!important",
-    },
+      [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {
+        borderRadius: 0,
+        borderTopLeftRadius: "5px",
+        borderBottomLeftRadius: "5px",
+        borderRight: "1px solid rgba(0,0,0,.1)!important",
+        ".moving-featured &, .is-aside &": {
+          borderRight: "none !important",
+        }
+      },
+      [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
+        borderRadius: 0,
+        borderTopLeftRadius: "5px",
+        borderBottomLeftRadius: "5px",
+        borderRight: "1px solid rgba(0,0,0,.1)!important",
+        ".moving-featured &, .is-aside &": {
+          borderRight: "none !important",
+        }
+      },
     },
     "& .card__image": {
       height: "100%"
@@ -97,20 +134,26 @@ const styles = theme => ({
       height: "25vh !important",
       borderRadius: "5px",
       overflow: "hidden",
-
-      
-       [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
+      [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {
         borderRadius: 0,
         borderTopLeftRadius: "5px",
         borderBottomLeftRadius: "5px",
-        height: "100% !important",
-
-       }
+        height: "100% !important"
+      },      
+      [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
+        borderRadius: 0,
+        borderTopLeftRadius: "5px",
+        borderBottomLeftRadius: "5px",
+        height: "100% !important"
+      }
     },
     [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {
       marginRight: ".5em",
-      width: "80px",
-      height: "80px"
+      width: "200px",
+      height: "100%",
+      transition: "all .3s",
+      transitionTimingFunction: "ease",
+      borderRadius: 0,
     },
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
       marginRight: ".8em",
@@ -146,8 +189,7 @@ const styles = theme => ({
     background: "linear-gradient(180deg,transparent 0,rgba(0,0,0,0.65) 70%)",
     zIndex: 1,
     margin: 0,
-    borderRadius: "5px",
-    color: "#ffffff",
+    borderRadius: "5px",    
     "& h1": {
       lineHeight: 1.15,
       fontWeight: 600,
@@ -186,7 +228,8 @@ const styles = theme => ({
       }
     },
     [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {
-      position: "relative !important"
+      position: "relative !important",
+      background: "none !important",
     },
 
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
@@ -201,8 +244,22 @@ const styles = theme => ({
 
 class ListItem extends React.Component {
   state = {
-    hidden: false
+    hidden: false,
+    activeIndex: -1
   };
+
+  linkClick = (event, value) => {
+    // this.setState({ activeIndex: index });
+    this.props.linkOnClick(this.props.post);
+  };
+
+   handleChange = (event, value) => {    
+    const category = event.target.innerText.trim();
+    console.log(category);
+    this.setState({ value });
+    this.props.filterCategory(category);
+  };
+
 
   componentDidUpdate(prevProps, prevState) {
      console.log(this.props.post);
@@ -221,26 +278,45 @@ class ListItem extends React.Component {
   }
 
   render() {
-    const { classes, post, linkOnClick } = this.props;
+    const { classes, post, linkOnClick , index} = this.props;
     console.log(post);
 
+    const className = this.state.activeIndex === this.props.index ? 'media active' : 'media';  
+  
+
+    //matches the current URL’s pathname.// only consider an event active if its event id is an odd number
+      // const isActive = (id) => {
+      //  return this.state.activeIndex === id;
+      // }
+
+
+    const isActive = (match, location) => {
+      console.log(match);
+      if (!match) {
+        return false;
+      }
+      this.props.linkOnClick(this.props.post);
+      return true;
+    }
+        
     return (
       <li
         className={`${classes.listItem} ${post.slug}`}
         style={{ display: `${this.state.hidden ? "none" : "block"}` }}
         key={post.slug}
       >
-        <Link
-          activeClassName="active"
-          className={classes.listLink}
+        <NavLink 
+          activeClassName="active"         
+          className={`${classes.listLink}`}
           to={`/${post.slug}/`}
-          onClick={linkOnClick}
+          onClick={this.linkClick}
+          isActive={isActive}
         >
           <div className={`${classes.listItemPointer} pointer`}>
             <Img
               outerWrapperClassName="card__image"
               sizes={post.heroImage.sizes}
-              alt={post.heroImage.title}
+              alt={post.heroImage.title}              
               style={{
                 background: `'#ffffff'}`,
                 height: "100%"
@@ -253,7 +329,7 @@ class ListItem extends React.Component {
               <h2>{post.metaDescription.metaDescription}</h2>
             )}
           </div>
-        </Link>
+        </NavLink>
       </li>
     );
   }

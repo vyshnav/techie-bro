@@ -74,17 +74,21 @@ const styles = theme => ({
     position: "absolute",
     top: 0,
     right: 0
+  },
+  activePost: {
+    display: "none !important"
   }
 });
 
 const ListHeader = props => {
-  const { classes, expandOnClick, categoryFilter, navigatorShape } = props;
+  const { classes, expandOnClick, categoryFilter, navigatorShape , activePost} = props;
 
   return (
     <header>
       {navigatorShape === "closed" && (
         <div className={classes.closed}>
           <h3>List of posts</h3>
+          <h3 className={classes.activePost}>{activePost}</h3>
           <IconButton
             aria-label="Expand the list"
             className={classes.expand}

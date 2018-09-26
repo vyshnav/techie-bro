@@ -1,10 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
+import { withRouter } from 'react-router'
 import PropTypes from "prop-types";
 import injectSheet from "react-jss";
 import { forceCheck } from "react-lazyload";
 
-import { setNavigatorPosition, setNavigatorShape, setCategoryFilter } from "../../state/store";
+import { setNavigatorPosition, setNavigatorShape, setCategoryFilter, setActivePost} from "../../state/store";
 import { moveNavigatorAside } from "./../../utils/shared";
 import List from "./List";
 
@@ -19,8 +20,8 @@ const styles = theme => ({
     top: 0,
     left: 0,
     height: "100vh",
-    transitionTimingFunction: "cubic-bezier(0, 0.85, 0.13, 1.01)",
-    transition: "left .5s",
+    transitionTimingFunction: "cubic-bezier(1, 0, 0, 1)",
+    transition: "left .2s",
     width: "100%",
     zIndex: 1,
     [`@media (max-width: ${theme.mediaQueryTresholds.L - 1}px)`]: {
@@ -106,7 +107,16 @@ const styles = theme => ({
 });
 
 class Navigator extends React.Component {
-  linkOnClick = moveNavigatorAside.bind(this);
+  state = {
+    activePost: ""
+  };
+  linkOnClick = post => {
+    moveNavigatorAside.bind(this);
+    console.log(post);
+    // this.props.setActivePost(post.slug);
+    this.setState({ activePost: post.slug });
+    console.log(this.props);  
+  };  
 
   expandOnClick = e => {
     this.props.setNavigatorShape("open");
@@ -131,6 +141,7 @@ class Navigator extends React.Component {
           )}    
         <List
           posts={posts}
+          activePost={this.state.activePost}
           categories={categories}
           navigatorPosition={navigatorPosition}
           navigatorShape={navigatorShape}
@@ -152,7 +163,8 @@ Navigator.propTypes = {
   setNavigatorShape: PropTypes.func.isRequired,
   isWideScreen: PropTypes.bool.isRequired,
   categoryFilter: PropTypes.string.isRequired,
-  setCategoryFilter: PropTypes.func.isRequired
+  setCategoryFilter: PropTypes.func.isRequired,
+  setActivePost: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -160,17 +172,19 @@ const mapStateToProps = (state, ownProps) => {
     navigatorPosition: state.navigatorPosition,
     navigatorShape: state.navigatorShape,
     isWideScreen: state.isWideScreen,
-    categoryFilter: state.categoryFilter
+    categoryFilter: state.categoryFilter,
+    activePost: state.activePost
   };
 };
 
 const mapDispatchToProps = {
   setNavigatorPosition,
   setNavigatorShape,
-  setCategoryFilter
+  setCategoryFilter,
+  setActivePost
 };
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(injectSheet(styles)(Navigator));
+)(injectSheet(styles)(Navigator)));

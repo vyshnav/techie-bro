@@ -44,7 +44,12 @@ const styles = theme => ({
     boxShadow: "none"
   },
   tab: {
-    minHeight: "40px"
+    minHeight: "40px",
+    [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {      
+    ".is-aside.open &": {
+      minWidth: "78px"
+    }     
+    },
   },
   labelContainer: {
     paddingTop: 0,

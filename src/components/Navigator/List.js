@@ -72,6 +72,8 @@ const Title = styled.h1`
 `
 
 class List extends React.Component {
+
+
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.categoryFilter !== this.props.categoryFilter) {
       setTimeout(forceCheck, 300);
@@ -84,6 +86,7 @@ class List extends React.Component {
     const {
       classes,
       posts,
+      activePost,
       tags,
       categories,
       title,
@@ -108,21 +111,24 @@ class List extends React.Component {
               expandOnClick={expandOnClick}
               categoryFilter={categoryFilter}
               navigatorShape={navigatorShape}
+              activePost={activePost}
             />
             <ul className={classes.list}>
               {posts &&
-                posts.map(({ node: post}, i) => (
+                posts.map(({ node: post}, index) => (
                   <ListItem
-                    key={i}
+                    key={index}
+                    index={index}
                     post={post}
                     linkOnClick={linkOnClick}
                     categoryFilter={categoryFilter}
                   />
                 ))}
                 {tags &&
-                tags.map((post, i) => (
+                tags.map((post, index) => (
                   <ListItem
-                    key={i}
+                    key={index}
+                    index={index}
                     post={post}
                     linkOnClick={linkOnClick}
                     categoryFilter={categoryFilter}

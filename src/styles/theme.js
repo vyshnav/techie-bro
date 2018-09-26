@@ -45,6 +45,7 @@ const theme = createMuiTheme({
   },
   navigator: {
     colors: {
+      postsListItemLinkM: colors.white,
       asidePostsListItemLinkHover: colors.white,
       background: colors.background,
       postsListItemLink: colors.gray,

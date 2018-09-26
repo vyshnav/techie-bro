@@ -12,6 +12,7 @@ const SET_IS_WIDE_SCREEN = "SET_IS_WIDE_SCREEN";
 const SET_SCROLL_TO_TOP = "SET_SCROLL_TO_TOP";
 const SET_FONT_SIZE_INCREASE = "SET_FONT_SIZE_INCREASE";
 const SET_CATEGORY_FILTER = "SET_CATEGORY_FILTER";
+const SET_ACTIVE_POST = "SET_ACTIVE_POST";
 
 /*
  * action creators
@@ -43,6 +44,10 @@ export function setFontSizeIncrease(val) {
 
 export function setCategoryFilter(val) {
   return { type: SET_CATEGORY_FILTER, val };
+}
+
+export function setActivePost(val) {
+  return { type: SET_ACTIVE_POST, val };
 }
 
 /*
@@ -92,6 +97,12 @@ const reducer = (state, action) => {
         categoryFilter: action.val
       };
 
+    case SET_ACTIVE_POST:
+      return {
+        ...state,
+        activePost: action.val
+      };
+
     default:
       return state;
   }
@@ -104,7 +115,8 @@ const initialState = {
   isWideScreen: false,
   scrollToTop: false,
   fontSizeIncrease: 1.166,
-  categoryFilter: "All"
+  categoryFilter: "All",
+  activePost: ""
 };
 
 const createStore = () =>

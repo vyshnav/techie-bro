@@ -1,4 +1,6 @@
 import React from "react";
+import { navigateTo } from "gatsby-link";
+import find from 'lodash/find'
 import ContentLoader, { Facebook } from "react-content-loader";
 import PropTypes from "prop-types";
 import Main from "../components/Main/";
@@ -10,6 +12,11 @@ import { setNavigatorPosition, setNavigatorShape } from "../state/store";
 import { moveNavigatorAside } from "../utils/shared";
 import Footer from "../components/Footer/";
 import Seo from "../components/Seo";
+
+import SwipeableViews from "react-swipeable-views";
+import virtualize from "react-swipeable-views-utils/lib/virtualize";
+
+const EnhancedSwipeableViews = virtualize(SwipeableViews);
 
 
 
@@ -40,24 +47,145 @@ const Post = asyncComponent(
     <rect x="29" y="568" rx="3" ry="3" width="201" height="6.4" />
   </ContentLoader>
 );
+
+
+
+
 class PostTemplate extends React.Component {
   moveNavigatorAside = moveNavigatorAside.bind(this);
+
+  state = {
+    swipeIndex: 0,
+  }
 
   componentDidMount() {
     console.log("here");
     if (this.props.navigatorPosition === "is-featured") {
       this.moveNavigatorAside();
     }
+  } 
+
+  componentWillMount() {
+    console.log("componentWillMount");
+    if (this.props.navigatorPosition === "is-featured") {
+      this.moveNavigatorAside();
+    }
+
+    if (this.postIndex.previous !== null && this.postIndex.next !== null) {
+      this.setState({
+        swipeIndex: 1
+      });
+    }
+
+    if (this.postIndex.previous !== null && this.postIndex.next == null) {
+      this.setState({
+        swipeIndex: 1
+      });
+    }
+
+    if (this.postIndex.previous == null && this.postIndex.next !== null) {
+      this.setState({
+        swipeIndex: 0
+      });
+    }
   }
+
+  postIndex = find(
+    this.props.data.allContentfulPost.edges,
+    ({ node: post }) => post.id === this.props.data.post.id
+  );
+
+  handleChangeIndex = index => {
+    console.log(this.postIndex);
+    const oldIndex = this.state.swipeIndex;
+
+    if (index < oldIndex) {
+      if (this.postIndex.previous){
+        console.log(index);
+        console.log(this.state.swipeIndex);
+        console.log(this.postIndex.previous);
+        navigateTo(`/${this.postIndex.previous.slug}/`);          
+      }
+    } else if (index > oldIndex) {
+      console.log(index);
+      console.log(this.state.swipeIndex);
+      if (this.postIndex.next) {
+        console.log(this.postIndex.next);
+        navigateTo(`/${this.postIndex.next.slug}/`);
+      }
+    }
+  };
 
   render() {
     const { data, pathContext } = this.props;
-    console.log(this.props);    
-    const facebook = (((data || {}).site || {}).siteMetadata || {}).facebook;
+    console.log(this.postIndex);
+    console.log(this.props);
 
+    const facebook = (((data || {}).site || {}).siteMetadata || {}).facebook;
+    
     return (
       <Main>
-        <Post post={data.post} slug={pathContext.slug} author={data.author} facebook={facebook} />
+        {this.postIndex.previous !== null &&
+          this.postIndex.next !== null && (
+        <SwipeableViews 
+        index={this.state.swipeIndex}
+        onChangeIndex={this.handleChangeIndex}>          
+          <Post
+              post={this.postIndex.previous}
+              slug={pathContext.slug}
+              author={data.author}
+              facebook={facebook}
+          />          
+          <Post
+            post={data.post}
+            slug={pathContext.slug}
+            author={data.author}
+            facebook={facebook}
+          />         
+          <Post
+              post={this.postIndex.next}
+              slug={pathContext.slug}
+              author={data.author}
+              facebook={facebook}
+            />          
+          </SwipeableViews>
+        )} 
+        {this.postIndex.previous == null && (
+          <SwipeableViews 
+          index={this.state.swipeIndex}
+          onChangeIndex={this.handleChangeIndex}>                      
+            <Post
+              post={data.post}
+              slug={pathContext.slug}
+              author={data.author}
+              facebook={facebook}
+            />
+             <Post
+              post={this.postIndex.next}
+              slug={pathContext.slug}
+              author={data.author}
+              facebook={facebook}
+            />                      
+          </SwipeableViews>
+          )}
+        {this.postIndex.next == null && (
+          <SwipeableViews 
+          index={this.state.swipeIndex}
+          onChangeIndex={this.handleChangeIndex}>            
+              <Post
+                post={this.postIndex.previous}
+                slug={pathContext.slug}
+                author={data.author}
+                facebook={facebook}
+              />            
+            <Post
+              post={data.post}
+              slug={pathContext.slug}
+              author={data.author}
+              facebook={facebook}
+            />                     
+          </SwipeableViews>
+          )}  
         {/*<Footer footnote={data.footnote} />*/}
         <Seo data={data.post} facebook={facebook} />
       </Main>
@@ -137,10 +265,72 @@ export const postQuery = graphql`
           id
         }
         previous {
+          title
+          id
           slug
+          node_locale
+          metaDescription {
+            metaDescription
+          }
+          publishDate(formatString: "MMMM DD, YYYY")
+          publishDateISO: publishDate(formatString: "YYYY-MM-DD")
+          tags {
+            title
+            id
+            slug
+            node_locale
+          }
+          heroImage {
+            title
+            sizes(maxWidth: 1800) {
+              ...GatsbyContentfulSizes_withWebp_noBase64
+            }
+            ogimg: resize(width: 1800) {
+              src
+              width
+              height
+            }
+          }
+          body {
+            childMarkdownRemark {
+              html
+              excerpt(pruneLength: 320)
+            }
+          }
         }
         next {
+          title
+          id
           slug
+          node_locale
+          metaDescription {
+            metaDescription
+          }
+          publishDate(formatString: "MMMM DD, YYYY")
+          publishDateISO: publishDate(formatString: "YYYY-MM-DD")
+          tags {
+            title
+            id
+            slug
+            node_locale
+          }
+          heroImage {
+            title
+            sizes(maxWidth: 1800) {
+              ...GatsbyContentfulSizes_withWebp_noBase64
+            }
+            ogimg: resize(width: 1800) {
+              src
+              width
+              height
+            }
+          }
+          body {
+            childMarkdownRemark {
+              html
+              excerpt(pruneLength: 320)
+            }
+          }
         }
       }
     }

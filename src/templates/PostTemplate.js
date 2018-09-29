@@ -8,15 +8,15 @@ import { connect } from "react-redux";
 require("core-js/fn/array/find");
 require("prismjs/themes/prism-okaidia.css");
 import asyncComponent from "../components/common/AsyncComponent/";
-import { setNavigatorPosition, setNavigatorShape } from "../state/store";
+import { setNavigatorPosition, setNavigatorShape , setScrollToTop} from "../state/store";
 import { moveNavigatorAside } from "../utils/shared";
 import Footer from "../components/Footer/";
 import Seo from "../components/Seo";
 
 import SwipeableViews from "react-swipeable-views";
-import virtualize from "react-swipeable-views-utils/lib/virtualize";
+import { bindKeyboard } from "react-swipeable-views-utils";
 
-const EnhancedSwipeableViews = virtualize(SwipeableViews);
+const BindKeyboardSwipeableViews = bindKeyboard(SwipeableViews);
 
 
 
@@ -27,7 +27,7 @@ const Post = asyncComponent(
         return module;
       })
       .catch(error => {}),
-  <ContentLoader
+     /* <ContentLoader
     height={600}
     width={400}
     speed={0.4}
@@ -45,8 +45,12 @@ const Post = asyncComponent(
     <rect x="29" y="520" rx="3" ry="3" width="340" height="6.4" /> 
     <rect x="29" y="546" rx="3" ry="3" width="350" height="6.4" /> 
     <rect x="29" y="568" rx="3" ry="3" width="201" height="6.4" />
-  </ContentLoader>
+  </ContentLoader>*/
+
+  
 );
+
+
 
 
 
@@ -62,6 +66,7 @@ class PostTemplate extends React.Component {
     console.log("here");
     if (this.props.navigatorPosition === "is-featured") {
       this.moveNavigatorAside();
+      this.props.setScrollToTop(true);
     }
   } 
 
@@ -75,15 +80,11 @@ class PostTemplate extends React.Component {
       this.setState({
         swipeIndex: 1
       });
-    }
-
-    if (this.postIndex.previous !== null && this.postIndex.next == null) {
+    } else if (this.postIndex.previous !== null && this.postIndex.next == null) {
       this.setState({
         swipeIndex: 1
       });
-    }
-
-    if (this.postIndex.previous == null && this.postIndex.next !== null) {
+    } else if (this.postIndex.previous == null && this.postIndex.next !== null) {
       this.setState({
         swipeIndex: 0
       });
@@ -127,33 +128,37 @@ class PostTemplate extends React.Component {
       <Main>
         {this.postIndex.previous !== null &&
           this.postIndex.next !== null && (
-        <SwipeableViews 
-        index={this.state.swipeIndex}
-        onChangeIndex={this.handleChangeIndex}>          
-          <Post
-              post={this.postIndex.previous}
-              slug={pathContext.slug}
-              author={data.author}
-              facebook={facebook}
-          />          
-          <Post
-            post={data.post}
-            slug={pathContext.slug}
-            author={data.author}
-            facebook={facebook}
-          />         
-          <Post
-              post={this.postIndex.next}
-              slug={pathContext.slug}
-              author={data.author}
-              facebook={facebook}
-            />          
-          </SwipeableViews>
-        )} 
+            <BindKeyboardSwipeableViews
+              index={this.state.swipeIndex}
+              onChangeIndex={this.handleChangeIndex}
+              style={{ transform : 'none' }}
+            >
+              <Post
+                post={this.postIndex.previous}
+                slug={pathContext.slug}
+                author={data.author}
+                facebook={facebook}
+              />
+              <Post
+                post={data.post}
+                slug={pathContext.slug}
+                author={data.author}
+                facebook={facebook}
+              />
+              <Post
+                post={this.postIndex.next}
+                slug={pathContext.slug}
+                author={data.author}
+                facebook={facebook}
+              />
+            </BindKeyboardSwipeableViews>
+          )}
         {this.postIndex.previous == null && (
-          <SwipeableViews 
+          <BindKeyboardSwipeableViews 
           index={this.state.swipeIndex}
-          onChangeIndex={this.handleChangeIndex}>                      
+          onChangeIndex={this.handleChangeIndex}
+          style={{ transform: "none" }}
+          >                      
             <Post
               post={data.post}
               slug={pathContext.slug}
@@ -166,12 +171,14 @@ class PostTemplate extends React.Component {
               author={data.author}
               facebook={facebook}
             />                      
-          </SwipeableViews>
+          </BindKeyboardSwipeableViews>
           )}
         {this.postIndex.next == null && (
-          <SwipeableViews 
+          <BindKeyboardSwipeableViews 
           index={this.state.swipeIndex}
-          onChangeIndex={this.handleChangeIndex}>            
+          onChangeIndex={this.handleChangeIndex}
+          style={{ transform: "none" }}
+          >            
               <Post
                 post={this.postIndex.previous}
                 slug={pathContext.slug}
@@ -184,7 +191,7 @@ class PostTemplate extends React.Component {
               author={data.author}
               facebook={facebook}
             />                     
-          </SwipeableViews>
+          </BindKeyboardSwipeableViews>
           )}  
         {/*<Footer footnote={data.footnote} />*/}
         <Seo data={data.post} facebook={facebook} />
@@ -198,7 +205,8 @@ PostTemplate.propTypes = {
   pathContext: PropTypes.object.isRequired,
   navigatorPosition: PropTypes.string.isRequired,
   setNavigatorPosition: PropTypes.func.isRequired,
-  isWideScreen: PropTypes.bool.isRequired
+  isWideScreen: PropTypes.bool.isRequired,
+  setScrollToTop: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -210,7 +218,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = {
   setNavigatorPosition,
-  setNavigatorShape
+  setNavigatorShape,
+  setScrollToTop,
 };
 
 export default connect(

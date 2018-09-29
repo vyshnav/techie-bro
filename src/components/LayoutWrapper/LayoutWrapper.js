@@ -21,7 +21,7 @@ const styles = theme => ({
 const LayoutWrapper = props => {
   const { classes, children } = props;
 
-  return <div className={classes.wrapper}>{children}</div>;
+  return <div >{children}</div>;
 };
 
 LayoutWrapper.propTypes = {

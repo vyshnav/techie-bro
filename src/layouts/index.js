@@ -144,7 +144,7 @@ export const guery = graphql`
           heroImage {
             title
             sizes(maxWidth: 1800) {
-              ...GatsbyContentfulSizes_withWebp
+              ...GatsbyContentfulSizes_withWebp_noBase64 
             }
           }
           category {

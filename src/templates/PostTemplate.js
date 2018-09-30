@@ -16,7 +16,7 @@ import Seo from "../components/Seo";
 import SwipeableViews from "react-swipeable-views";
 import { bindKeyboard } from "react-swipeable-views-utils";
 
-const BindKeyboardSwipeableViews = bindKeyboard(SwipeableViews);
+
 
 
 
@@ -27,7 +27,7 @@ const Post = asyncComponent(
         return module;
       })
       .catch(error => {}),
-     /* <ContentLoader
+  /*<ContentLoader
     height={600}
     width={400}
     speed={0.4}
@@ -128,10 +128,9 @@ class PostTemplate extends React.Component {
       <Main>
         {this.postIndex.previous !== null &&
           this.postIndex.next !== null && (
-            <BindKeyboardSwipeableViews
+            <SwipeableViews
               index={this.state.swipeIndex}
-              onChangeIndex={this.handleChangeIndex}
-              style={{ transform : 'none' }}
+              onChangeIndex={this.handleChangeIndex}              
             >
               <Post
                 post={this.postIndex.previous}
@@ -151,13 +150,12 @@ class PostTemplate extends React.Component {
                 author={data.author}
                 facebook={facebook}
               />
-            </BindKeyboardSwipeableViews>
+            </SwipeableViews>
           )}
         {this.postIndex.previous == null && (
-          <BindKeyboardSwipeableViews 
+          <SwipeableViews 
           index={this.state.swipeIndex}
           onChangeIndex={this.handleChangeIndex}
-          style={{ transform: "none" }}
           >                      
             <Post
               post={data.post}
@@ -171,13 +169,12 @@ class PostTemplate extends React.Component {
               author={data.author}
               facebook={facebook}
             />                      
-          </BindKeyboardSwipeableViews>
+          </SwipeableViews>
           )}
         {this.postIndex.next == null && (
-          <BindKeyboardSwipeableViews 
+          <SwipeableViews 
           index={this.state.swipeIndex}
           onChangeIndex={this.handleChangeIndex}
-          style={{ transform: "none" }}
           >            
               <Post
                 post={this.postIndex.previous}
@@ -191,7 +188,7 @@ class PostTemplate extends React.Component {
               author={data.author}
               facebook={facebook}
             />                     
-          </BindKeyboardSwipeableViews>
+          </SwipeableViews>
           )}  
         {/*<Footer footnote={data.footnote} />*/}
         <Seo data={data.post} facebook={facebook} />

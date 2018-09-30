@@ -244,23 +244,14 @@ const styles = theme => ({
 
 class ListItem extends React.Component {
   state = {
-    hidden: false,
-    activeIndex: -1
+    hidden: false
   };
 
   linkClick = (event, value) => {
     // this.setState({ activeIndex: index });
     this.props.linkOnClick(this.props.post);
   };
-
-   handleChange = (event, value) => {    
-    const category = event.target.innerText.trim();
-    console.log(category);
-    this.setState({ value });
-    this.props.filterCategory(category);
-  };
-
-
+ 
   componentDidUpdate(prevProps, prevState) {
      console.log(this.props.post);
     if (prevProps.categoryFilter !== this.props.categoryFilter) {
@@ -279,25 +270,7 @@ class ListItem extends React.Component {
 
   render() {
     const { classes, post, linkOnClick , index} = this.props;
-    console.log(post);
-
-    const className = this.state.activeIndex === this.props.index ? 'media active' : 'media';  
-  
-
-    //matches the current URL’s pathname.// only consider an event active if its event id is an odd number
-      // const isActive = (id) => {
-      //  return this.state.activeIndex === id;
-      // }
-
-
-    const isActive = (match, location) => {
-      console.log(match);
-      if (!match) {
-        return false;
-      }
-      this.props.linkOnClick(this.props.post);
-      return true;
-    }
+    console.log(post);   
         
     return (
       <li
@@ -309,8 +282,7 @@ class ListItem extends React.Component {
           activeClassName="active"         
           className={`${classes.listLink}`}
           to={`/${post.slug}/`}
-          onClick={this.linkClick}
-          isActive={isActive}
+          onClick={this.linkClick.bind(this)}         
         >
           <div className={`${classes.listItemPointer} pointer`}>
             <Img

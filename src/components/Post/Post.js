@@ -7,6 +7,7 @@ import Content from "../Main/Content";
 import PostFooter from "./PostFooter";
 import TagList from "./TagList";
 import Hero from "./Hero";
+import SpringScrollbars from "../SpringScrollbars";
 
 const Post = props => {
   const { post, author, slug, facebook } = props;
@@ -15,6 +16,7 @@ const Post = props => {
   console.log(post);
 
   return (
+    <SpringScrollbars>
     <Article>
       <Hero title={post.title} date={post.publishDate} image={post.heroImage} height={"50vh"} />      
       <PostHeader subTitle={post.metaDescription}/>
@@ -22,6 +24,7 @@ const Post = props => {
       <Content html={post.body.childMarkdownRemark.html} />
       <PostFooter author={author} post={post} slug={slug} facebook={facebook} />
     </Article>
+    </SpringScrollbars>
   );
 };
 

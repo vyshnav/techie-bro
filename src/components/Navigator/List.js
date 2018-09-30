@@ -118,7 +118,6 @@ class List extends React.Component {
                 posts.map(({ node: post}, index) => (
                   <ListItem
                     key={index}
-                    index={index}
                     post={post}
                     linkOnClick={linkOnClick}
                     categoryFilter={categoryFilter}
@@ -128,7 +127,6 @@ class List extends React.Component {
                 tags.map((post, index) => (
                   <ListItem
                     key={index}
-                    index={index}
                     post={post}
                     linkOnClick={linkOnClick}
                     categoryFilter={categoryFilter}

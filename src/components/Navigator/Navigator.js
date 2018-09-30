@@ -111,13 +111,13 @@ class Navigator extends React.Component {
   state = {
     activePost: ""
   };
+
   linkOnClick = post => {
     moveNavigatorAside.bind(this);
     console.log(post);
-    // this.props.setActivePost(post.slug);
     this.setState({ activePost: post.slug });
-    console.log(this.props);  
-  };  
+    console.log(this.props);
+  };
 
   expandOnClick = e => {
     this.props.setNavigatorShape("open");

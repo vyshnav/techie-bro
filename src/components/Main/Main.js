@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import injectSheet from "react-jss";
-import SpringScrollbars from "../SpringScrollbars";
+
 
 const styles = theme => ({
   main: {
@@ -22,6 +22,9 @@ const styles = theme => ({
       "& > div > div": {
         position: "relative!important"
       }
+    },
+    "& .react-swipeable-view-container": {
+      height: "100vh"
     }
   },
   article: {
@@ -64,7 +67,7 @@ const Main = props => {
 
   return (
     <main className={classes.main}>
-      <SpringScrollbars>{children}</SpringScrollbars>
+      {children}
     </main>
   );
 };

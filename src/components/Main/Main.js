@@ -23,8 +23,11 @@ const styles = theme => ({
         position: "relative!important"
       }
     },
+    "& > div": {
+        height: "100%"
+      },
     "& .react-swipeable-view-container": {
-      height: "100vh"
+      height: "100%"
     }
   },
   article: {

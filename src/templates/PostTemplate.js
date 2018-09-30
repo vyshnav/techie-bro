@@ -27,7 +27,7 @@ const Post = asyncComponent(
         return module;
       })
       .catch(error => {}),
-  /*<ContentLoader
+  <ContentLoader
     height={600}
     width={400}
     speed={0.4}
@@ -45,9 +45,7 @@ const Post = asyncComponent(
     <rect x="29" y="520" rx="3" ry="3" width="340" height="6.4" /> 
     <rect x="29" y="546" rx="3" ry="3" width="350" height="6.4" /> 
     <rect x="29" y="568" rx="3" ry="3" width="201" height="6.4" />
-  </ContentLoader>*/
-
-  
+  </ContentLoader>  
 );
 
 

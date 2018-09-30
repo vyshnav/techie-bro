@@ -9,7 +9,9 @@ const styles = theme => ({
     top: 0,
     left: 0,
     bottom: 0,
-    width: "100%",   
+    width: "100%", 
+    animationName: "main-entry",
+    animationDuration: ".5s",  
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
       width: `calc(100vw - ${theme.info.sizes.width}px - ${theme.bars.sizes.actionsBar}px)`,
       left: `${theme.info.sizes.width}px`
@@ -62,7 +64,15 @@ const styles = theme => ({
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
       padding: "3.5rem"
     }
-  }
+  },
+  "@keyframes main-entry": {
+    "0%": {
+      opacity: 0,      
+    },
+    "100%": {
+      opacity: 1,      
+    }
+  }    
 });
 
 const Main = props => {

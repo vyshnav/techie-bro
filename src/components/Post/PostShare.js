@@ -33,9 +33,10 @@ const styles = theme => ({
   },
   speedDial: {
     position: "fixed",
-    bottom: "80px",
-    padding: "1rem",
-  }, 
+    bottom: "65px",
+    padding: "0.5rem",
+    zIndex: 99999
+  },
   fab: {
     background: "linear-gradient(87deg,#f5365c 0,#f56036 100%)!important",
   },

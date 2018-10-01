@@ -36,6 +36,7 @@
   "dependencies": {
     "@material-ui/core": "^1.4.0",
     "@material-ui/icons": "^1.1.0",
+    "@material-ui/lab": "^3.0.0-alpha.18",
     "color": "^3.0.0",
     "gatsby": "^1.9.274",
     "gatsby-image": "^1.0.55",

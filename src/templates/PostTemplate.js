@@ -48,22 +48,20 @@ const Post = asyncComponent(
   </ContentLoader>  
 );
 
-
-
-
-
-
 class PostTemplate extends React.Component {
   moveNavigatorAside = moveNavigatorAside.bind(this);
 
   state = {
-    swipeIndex: 0,
-  }
+    swipeIndex: 0
+  };
 
   componentDidMount() {
     console.log("here");
     if (this.props.navigatorPosition === "is-featured") {
       this.moveNavigatorAside();
+    }
+
+    if (this.props.navigatorPosition === "is-aside") {
       this.props.setScrollToTop(true);
     }
   } 

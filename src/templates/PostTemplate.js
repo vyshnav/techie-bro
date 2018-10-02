@@ -14,7 +14,10 @@ import Footer from "../components/Footer/";
 import Seo from "../components/Seo";
 
 import SwipeableViews from "react-swipeable-views";
+import SwipeableRoutes from "react-swipeable-routes";
 import { bindKeyboard } from "react-swipeable-views-utils";
+
+import {Route} from "react-router-dom";
 
 
 
@@ -55,6 +58,19 @@ class PostTemplate extends React.Component {
     swipeIndex: 0
   };
 
+  componentWillReceiveProps(nextProps, prevProps) {
+     console.log(nextProps);
+     console.log(prevProps);
+    // const nextPathname = nextProps.location.pathname
+    // const currentPathname = this.props.location.pathname
+
+    // if (nextPathname !== currentPathname) {
+    //   this.setState({
+    //     activeItem: nextPathname,
+    //   })
+    // }
+  }
+
   componentDidMount() {
     console.log("here");
     if (this.props.navigatorPosition === "is-featured") {
@@ -64,55 +80,13 @@ class PostTemplate extends React.Component {
     if (this.props.navigatorPosition === "is-aside") {
       this.props.setScrollToTop(true);
     }
-  } 
-
-  componentWillMount() {
-    console.log("componentWillMount");
-    if (this.props.navigatorPosition === "is-featured") {
-      this.moveNavigatorAside();
-    }
-
-    if (this.postIndex.previous !== null && this.postIndex.next !== null) {
-      this.setState({
-        swipeIndex: 1
-      });
-    } else if (this.postIndex.previous !== null && this.postIndex.next == null) {
-      this.setState({
-        swipeIndex: 1
-      });
-    } else if (this.postIndex.previous == null && this.postIndex.next !== null) {
-      this.setState({
-        swipeIndex: 0
-      });
-    }
   }
-
+  
   postIndex = find(
     this.props.data.allContentfulPost.edges,
     ({ node: post }) => post.id === this.props.data.post.id
   );
-
-  handleChangeIndex = index => {
-    console.log(this.postIndex);
-    const oldIndex = this.state.swipeIndex;
-
-    if (index < oldIndex) {
-      if (this.postIndex.previous){
-        console.log(index);
-        console.log(this.state.swipeIndex);
-        console.log(this.postIndex.previous);
-        navigateTo(`/${this.postIndex.previous.slug}/`);          
-      }
-    } else if (index > oldIndex) {
-      console.log(index);
-      console.log(this.state.swipeIndex);
-      if (this.postIndex.next) {
-        console.log(this.postIndex.next);
-        navigateTo(`/${this.postIndex.next.slug}/`);
-      }
-    }
-  };
-
+  
   render() {
     const { data, pathContext } = this.props;
     console.log(this.postIndex);
@@ -124,67 +98,75 @@ class PostTemplate extends React.Component {
       <Main>
         {this.postIndex.previous !== null &&
           this.postIndex.next !== null && (
-            <SwipeableViews
-              index={this.state.swipeIndex}
-              onChangeIndex={this.handleChangeIndex}              
-            >
-              <Post
+          <SwipeableRoutes>
+            <Route path={`/${this.postIndex.previous.slug}/`}>
+            <Post
                 post={this.postIndex.previous}
                 slug={pathContext.slug}
                 author={data.author}
                 facebook={facebook}
               />
-              <Post
+            </Route>  
+            <Route path={`/${data.post.slug}/`} >
+            <Post
                 post={data.post}
                 slug={pathContext.slug}
                 author={data.author}
                 facebook={facebook}
               />
-              <Post
+            </Route>
+            <Route path={`/${this.postIndex.next.slug}/`} >
+            <Post
                 post={this.postIndex.next}
                 slug={pathContext.slug}
                 author={data.author}
                 facebook={facebook}
-              />
-            </SwipeableViews>
+              /> 
+            </Route>
+          </SwipeableRoutes>
+            
           )}
         {this.postIndex.previous == null && (
-          <SwipeableViews 
-          index={this.state.swipeIndex}
-          onChangeIndex={this.handleChangeIndex}
-          >                      
+          <SwipeableRoutes>
+            <Route path={`/${data.post.slug}/`}>
+                         
             <Post
               post={data.post}
               slug={pathContext.slug}
               author={data.author}
               facebook={facebook}
             />
+            </Route>
+            <Route path={`/${this.postIndex.next.slug}/`}>
              <Post
               post={this.postIndex.next}
               slug={pathContext.slug}
               author={data.author}
               facebook={facebook}
-            />                      
-          </SwipeableViews>
+            /> 
+            </Route>                     
+         </SwipeableRoutes>
+
           )}
         {this.postIndex.next == null && (
-          <SwipeableViews 
-          index={this.state.swipeIndex}
-          onChangeIndex={this.handleChangeIndex}
-          >            
+          <SwipeableRoutes>  
+          <Route path={`/${this.postIndex.previous.slug}/`}>        
               <Post
                 post={this.postIndex.previous}
                 slug={pathContext.slug}
                 author={data.author}
                 facebook={facebook}
-              />            
+              />
+              </Route>  
+          <Route path={`/${data.post.slug}/`}>                        
             <Post
               post={data.post}
               slug={pathContext.slug}
               author={data.author}
               facebook={facebook}
-            />                     
-          </SwipeableViews>
+            /> 
+             </Route>                     
+           </SwipeableRoutes>
           )}  
         {/*<Footer footnote={data.footnote} />*/}
         <Seo data={data.post} facebook={facebook} />

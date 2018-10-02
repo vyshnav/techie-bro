@@ -37,6 +37,9 @@ const styles = theme => ({
     padding: "0.5rem",
     zIndex: 99999
   },
+  speedDialAction: {
+    pointerEvents: "visible !important"
+  },
   fab: {
     background: "linear-gradient(87deg,#f5365c 0,#f56036 100%)!important",
   },
@@ -118,17 +121,14 @@ class PostShare extends React.Component {
   render() {
     const { classes } = this.props;
     const { hidden, open } = this.state;
-    
-    const filter = count => (count > 0 ? count : "");
-
-    
+   
 
     return (
       <div className={classes.share}>
         <SpeedDial
           ariaLabel="Share post!"
           className={classes.speedDial}
-          classes={{ fab: classes.fab }}
+          classes={{ fab: classes.fab, actionsClosed: classes.speedDialAction }}
           // hidden={hidden}
           icon={<SpeedDialIcon icon={<Share />} openIcon={<Clear />} />}
           onBlur={this.handleClose}
@@ -140,7 +140,7 @@ class PostShare extends React.Component {
           open={open}
         >
           {this.actions.map(action => (
-            <SpeedDialAction
+            <SpeedDialAction              
               key={action.name}
               icon={action.icon}
               tooltipTitle={action.name}

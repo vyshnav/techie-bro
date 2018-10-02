@@ -82,6 +82,7 @@
     "react-popper": "0.10.4",
     "react-redux": "^5.0.6",
     "react-share": "^2.2.0",
+    "react-swipeable-routes": "^0.4.1",
     "react-swipeable-views": "^0.13.0",
     "rebound": "^0.1.0",
     "redux": "^4.0.0",

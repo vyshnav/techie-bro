@@ -9,24 +9,26 @@ import TagList from "./TagList";
 import Hero from "./Hero";
 import SpringScrollbars from "../SpringScrollbars";
 
-const Post = props => {
-  const { post, author, slug, facebook } = props;
+class Post extends React.Component {
+  render() {
+    const { post, author, slug, facebook } = this.props;
 
-  //console.log(htmlAst);
-  console.log(post);
+    //console.log(htmlAst);
+    console.log(post);
 
-  return (
-    <SpringScrollbars>
-    <Article>
-      <Hero title={post.title} date={post.publishDate} image={post.heroImage} height={"50vh"} />      
-      <PostHeader subTitle={post.metaDescription}/>
-      {post.tags && <TagList tags={post.tags} />}
-      <Content html={post.body.childMarkdownRemark.html} />
-      <PostFooter author={author} post={post} slug={slug} facebook={facebook} />
-    </Article>
-    </SpringScrollbars>
-  );
-};
+    return (
+      <SpringScrollbars>
+        <Article>
+          <Hero title={post.title} date={post.publishDate} image={post.heroImage} height={"50vh"} />      
+          <PostHeader subTitle={post.metaDescription}/>
+          {post.tags && <TagList tags={post.tags} />}
+          <Content html={post.body.childMarkdownRemark.html} />
+          <PostFooter author={author} post={post} slug={slug} facebook={facebook} />
+        </Article>
+      </SpringScrollbars>
+    );
+  }
+}
 
 Post.propTypes = {
   post: PropTypes.object.isRequired,
